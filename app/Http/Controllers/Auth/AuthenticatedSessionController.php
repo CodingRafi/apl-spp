@@ -37,13 +37,13 @@ class AuthenticatedSessionController extends Controller
             'password' => 'required'
         ]);
         
-        $user = User::when($request->role == 'super_admin' || $request->role == 'admin' || $request->role == 'yayasan', function($q) use($request){
+        $user = User::when($request->role == 'super_admin' || $request->role == 'admin', function($q) use($request){
                     $q->where('email', $request->login);
                 })
                 ->when($request->role == 'siswa', function($q) use($request){
                     $q->where('nipd', $request->login);
                 })
-                ->when($request->role != 'super_admin' && $request->role != 'admin' && $request->role != 'yayasan' && $request->role != 'siswa', function($q) use($request){
+                ->when($request->role != 'super_admin' && $request->role != 'admin' && $request->role != 'siswa', function($q) use($request){
                     $q->where('nip', $request->login);
                 })
                 ->first();

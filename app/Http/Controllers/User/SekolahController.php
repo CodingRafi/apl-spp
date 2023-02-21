@@ -60,23 +60,7 @@ class SekolahController extends Controller
             'user_id' => $user->id
         ]);
 
-        if($request->name_yayasan && $request->email_yayasan){
-            $yayasan = User::create([
-                'email' => $request->email_yayasan,
-                'password' => \Hash::make($request->password_yayasan),
-                'sekolah_id' => $sekolah->id
-            ]);
-
-            $yayasan->assignRole('yayasan');
-
-            
-            DB::table('profile_users')->insert([
-                'name' => $request->name_yayasan,
-                'user_id' => $yayasan->id
-            ]);
-        }
-
-        Mail::to($user->email)->send(new RegisterMail($user, $yayasan ?? '', $request->password, $request->password_yayasan));
+        Mail::to($user->email)->send(new RegisterMail($user, $request->password));
 
         Auth::login($user);
 

@@ -31,4 +31,20 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'bulan' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+    
+    'tingkat' => [
+        '1' => 'I',
+        '2' => 'II',
+        '3' => 'III',
+        '4' => 'IV',
+        '5' => 'V',
+        '6' => 'IV',
+        '7' => 'VII',
+        '8' => 'VIII',
+        '9' => 'IX',
+        '10' => 'X',
+        '11' => 'XI',
+        '12' => 'XII',
+    ], 
 ];

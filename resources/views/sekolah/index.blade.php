@@ -1,6 +1,7 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
+
 <div class="card">
     <div class="card-body">
         <h4 class="card-title">Sekolah</h4>

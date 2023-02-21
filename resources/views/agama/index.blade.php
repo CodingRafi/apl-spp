@@ -1,44 +1,45 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
+<div class="d-flex justify-content-between mb-3 align-items-center">
+    <h1 class="h3"><strong>Agama</strong></h1>
+    @can('add_agama')
+    <button type="button" class="btn btn-primary text-white float-right" data-bs-toggle="modal" data-bs-target="#tambah-agama">
+        Tambah Agama
+    </button>
+    @endcan
+</div>
+
 <div class="card">
     <div class="card-body">
-        @can('add_agama')
-        <div class="title d-flex justify-content-between">
-            <h4 class="card-title">Agama</h4>
-            <button type="button" class="btn btn-sm text-white float-right" data-bs-toggle="modal" data-bs-target="#tambah-agama" style="height: fit-content; background-color: #3bae9c;border-radius: 5px;font-weight: 500;">
-                Tambah Agama
-            </button>
-        </div>
-        @endcan
-    </div>
-    <div class="table table-responsive table-hover text-center">
-        <table class="table align-middle">
-            <thead>
-                <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Nama</th>
-                    @can('edit_agama', 'hapus_agama')
-                    <th scope="col">Options</th>
-                    @endcan
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($agamas as $agama)
+        <div class="table table-responsive table-hover text-center">
+            <table class="table align-middle">
+                <thead>
                     <tr>
-                        <th scope="row">{{ $loop->iteration }}</th>
-                        <td>{{ $agama->nama }}</td>
-                        <td>
-                            <a href="{{ route('agama.edit', [$agama->id]) }}" class="btn btn-sm btn-warning text-white" style="border-radius: 5px; font-weight: 500;">Edit</a>
-                            @if (auth()->user()->can('delete_agama'))
-                            <button type="submit" class="btn btn-sm btn-danger font-weight-bold"
-                                onclick="deleteData('{{ route('agama.destroy', [$agama->id]) }}')" style="border-radius: 5px; font-weight: 500;">Hapus</button>
-                            @endif
-                        </td>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        @can('edit_agama', 'hapus_agama')
+                        <th scope="col">Options</th>
+                        @endcan
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($agamas as $agama)
+                        <tr>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            <td>{{ $agama->nama }}</td>
+                            <td>
+                                <a href="{{ route('agama.edit', [$agama->id]) }}" class="btn btn-sm btn-warning text-white" style="border-radius: 5px; font-weight: 500;">Edit</a>
+                                @if (auth()->user()->can('delete_agama'))
+                                <button type="submit" class="btn btn-sm btn-danger font-weight-bold"
+                                    onclick="deleteData('{{ route('agama.destroy', [$agama->id]) }}')" style="border-radius: 5px; font-weight: 500;">Hapus</button>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -66,7 +67,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn text-white" style="background-color: #3bae9c;">Tambah</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
                 </div>
             </div>
         </form>

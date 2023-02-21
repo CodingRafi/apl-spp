@@ -1,126 +1,57 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
+<div class="d-flex justify-content-between mb-3 align-items-center">
+    <div class="col-md-7">
+        <h1 class="h3"><strong>Data {{ $role }}</strong></h1>
+    </div>
+    <div class="col-md d-flex justify-content-end gap-2">
+        @if (auth()->user()->can('export_users'))
+        <x-ButtonCustom class="btn btn-primary" route="/export/users/{{ $role }}">
+            Export
+        </x-ButtonCustom>
+        @endif
+        @if (auth()->user()->can('import_users'))
+        <x-ButtonCustom class="btn btn-primary" route="/import/users/{{ $role }}">
+            Import
+        </x-ButtonCustom>
+        @endif
+        @if (auth()->user()->can('add_users'))
+        <x-ButtonCustom class="btn btn-primary" route="{{ route('users.create', [$role]) }}">
+            Tambah
+        </x-ButtonCustom>
+        @endif
+    </div>
+</div>
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title float-left">Data {{ $role }}</h4>
-        <ul class="nav float-right mb-4" style="gap: 1rem;">
-            <li class="nav-item">
-                <div class="input-group input-group-sm">
-                    <form action="" method="get" style="display: flex; gap: 0.3rem;">
-                        @include('mypartials.tahunajaran')
-                        @if (request('kelas'))
-                            <input type="hidden" name="kelas" value="{{ request('kelas') }}">
-                        @endif
-                        @if (request('jurusan'))
-                            <input type="hidden" name="jurusan" value="{{ request('jurusan') }}">
-                        @endif
-                        @if (request('page'))
-                            <input type="hidden" name="page" value="{{ request('page') }}">
-                        @endif
-                        <input type="text" class="form-control" placeholder="Search" style="height: 1.9rem;" name="search"
-                            value="{{ request('search') }}">
-                        <button type="submit" class="btn" style="border: 1px solid rgb(205, 205, 205); height: 1.9rem; width: 2.5rem; padding: 0.1rem"><i class="bi bi-search"></i></button>
-                    </form>
-                </div>
-            </li>
+        <div class="row container-filter">
+            <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" placeholder="Search..." name="search" onkeyup="filter_user()">
+            </div>
             @if ($role == 'siswa')
             @if (check_jenjang())
-            <div class="dropdown">
-                <button class="btn dropdown-toggle jurusan" type="button" id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid rgb(205, 205, 205); height: 1.9rem; min-width: 6rem; padding: 0.1rem">
-                    Jurusan
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <div class="col-md-3 mb-3">
+                <select class="form-select filter-kompetensi" onchange="filter_user()">
+                    <option value="" selected>Pilih Kompetensi</option>
                     @foreach ($kompetensis as $kompetensi)
-                    <li>
-                        <form action="" method="get">
-                            @include('mypartials.tahunajaran')
-                            @if (request('kelas'))
-                                <input type="hidden" name="kelas" value="{{ request('kelas') }}">
-                            @endif
-                            @if (request('search'))
-                                <input type="hidden" name="search" value="{{ request('search') }}">
-                            @endif
-                            @if (request('page'))
-                                <input type="hidden" name="page" value="{{ request('page') }}">
-                            @endif
-                            <input type="hidden" name="jurusan" value="{{ $kompetensi->id }}">
-                            <button type="submit" class="dropdown-item">{{ $kompetensi->kompetensi }}</button>
-                        </form>
-                    </li>
+                    <option value="{{ $kompetensi->id }}">{{ $kompetensi->kompetensi }}</option>
                     @endforeach
-                </ul>
+                </select>
             </div>
             @endif
-            <div class="dropdown">
-                <button class="btn dropdown-toggle kelas" type="button" id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid rgb(205, 205, 205); height: 1.9rem; min-width: 5rem; padding: 0.1rem">
-                    Kelas
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <div class="col-md-3 mb-3">
+                <select class="form-select filter-kelas" onchange="filter_user()">
+                    <option value="" selected>Pilih Kelas</option>
                     @foreach ($kelas as $row)
-                    <li>
-                        <form action="" method="get">
-                            @include('mypartials.tahunajaran')
-                            @if (request('jurusan'))
-                                <input type="hidden" name="jurusan" value="{{ request('jurusan') }}">
-                            @endif
-                            @if (request('search'))
-                                <input type="hidden" name="search" value="{{ request('search') }}">
-                            @endif
-                            @if (request('page'))
-                                <input type="hidden" name="page" value="{{ request('page') }}">
-                            @endif
-                            <input type="hidden" name="kelas" value="{{ $row->id }}">
-                            <button type="submit" class="dropdown-item">{{ $row->romawi }} {{ $row->nama }}</button>
-                        </form>
-                    </li>
+                    <option value="{{ $row->id }}">{{ $row->romawi }} {{ $row->nama }}</option>
                     @endforeach
-                </ul>
+                </select>
             </div>
             @endif
-            @if (auth()->user()->can('export_users')) 
-            <li class="nav-item">
-                <form action="/export/users/{{ $role }}" method="get">
-                    @include('mypartials.tahunajaran')
-                    @if (request('kelas'))
-                        <input type="hidden" name="kelas" value="{{ request('kelas') }}">
-                    @endif
-                    @if (request('jurusan'))
-                        <input type="hidden" name="jurusan" value="{{ request('jurusan') }}">
-                    @endif
-                    @if (request('search'))
-                        <input type="hidden" name="search" value="{{ request('search') }}">
-                    @endif
-                    @if (request('page'))
-                        <input type="hidden" name="page" value="{{ request('page') }}">
-                    @endif
-                    <button type="submit" class="btn btn-sm text-white px-3"
-                        style="background-color: #3bae9c;border-radius: 5px;font-weight: 500;">Export</button>
-                </form>
-            </li>
-            @endif
-            @if (auth()->user()->can('import_users')) 
-            <li class="nav-item">
-                <form action="/import/users/{{ $role }}" method="get">
-                    @include('mypartials.tahunajaran')
-                    <button class="btn btn-sm text-white"
-                        style="background-color: #3bae9c;border-radius: 5px;font-weight: 500;">Import</button>
-                </form> 
-            </li>
-            @endif
-            @if (auth()->user()->can('add_users'))
-            <li class="nav-item">
-                <form action="{{ route('users.create', [$role]) }}" method="get">
-                    @include('mypartials.tahunajaran')
-                    <button class="btn btn-sm text-white" style="background-color: #3bae9c;border-radius: 5px;font-weight: 500;">Tambah</button>
-                </form>
-            </li>
-            @endif
-        </ul>
+        </div>
         <div class="table table-responsive table-hover text-center">
-            <table class="table align-middle">
+            <table class="table align-middle table-user">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
@@ -134,35 +65,42 @@
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>
-                            <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}" alt="" style="object-fit: cover; border-radius: 50%">
+                            {{-- <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
+                                alt="" style="object-fit: cover; border-radius: 50%"> --}}
                         </td>
-                    <td>{{ $role != 'siswa' ? ($user->profile_user ? $user->profile_user->name : '') : ($user->profile_siswa ? $user->profile_siswa->name : '') }}</td>   
+                        <td>{{ $role != 'siswa' ? ($user->profile_user ? $user->profile_user->name : '') :
+                            ($user->profile_siswa ? $user->profile_siswa->name : '') }}</td>
                         <td>
-                            <form action="{{ route('users.shows', ['role' => $role, 'id' => $user->id]) }}" method="get">
+                            <form action="{{ route('users.shows', ['role' => $role, 'id' => $user->id]) }}"
+                                method="get">
                                 @include('mypartials.tahunajaran')
-                                <button class="btn btn-sm text-white" style="background-color: #3bae9c; width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Show</button>
+                                <button class="btn btn-sm text-white"
+                                    style="background-color: #3bae9c; width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Show</button>
                             </form>
                             @if (auth()->user()->can('edit_users'))
                             <form action="{{ route('users.edit', ['role' => $role, 'id' => $user->id]) }}" method="get">
                                 @include('mypartials.tahunajaran')
-                                <button class="btn btn-sm btn-warning text-white" style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Edit</button>
+                                <button class="btn btn-sm btn-warning text-white"
+                                    style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Edit</button>
                             </form>
                             @if ($role == 'siswa')
                             <form action="{{ route('users.down', ['id' => $user->id]) }}" method="post">
                                 @include('mypartials.tahunajaran')
                                 @csrf
-                                <button class="btn btn-sm btn-danger text-white" style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;" onclick="return confirm('apakah anda yakin?')">Down</button>
+                                <button class="btn btn-sm btn-danger text-white"
+                                    style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;"
+                                    onclick="return confirm('apakah anda yakin?')">Down</button>
                             </form>
                             @endif
                             @endif
                             @if (auth()->user()->can('delete_users'))
                             <button type="submit" class="btn btn-sm btn-danger"
-                                onclick="deleteData('{{ route('users.destroy', ['role' => $role, 'id' => $user->id]) }}')" style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Hapus</button>
+                                onclick="deleteData('{{ route('users.destroy', ['role' => $role, 'id' => $user->id]) }}')"
+                                style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Hapus</button>
                             @endif
                         </td>
                     </tr>
                     @endforeach
-
                 </tbody>
             </table>
             {{ $users->links() }}
@@ -170,3 +108,82 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+<script>
+    function filter_user(){
+            let role = '{{ request("role") }}';
+            let form = new FormData();
+            form.set('search', $('.container-filter input[name="search"]').val());
+            form.set('kompetensi', $('.container-filter .filter-kompetensi') ? $('.container-filter .filter-kompetensi').val() : '');
+            form.set('kelas', $('.container-filter .filter-kelas').val());
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('users.list', request('role')) }}",
+                data: form,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                beforeSend: function (e) {
+                    if (e && e.overrideMimeType) {
+                        e.overrideMimeType("application/json;charset=UTF-8");
+                    }
+                },
+                success: function (response) {
+                    console.log(response)
+                    $('.table-user tbody').empty();
+                    let no = 1;
+                    $.each(response.data, function(i,e){
+                        console.log(e)
+                        $('.table-user tbody').append(
+                            `
+                            <tr>
+                                <th scope="row">${no}</th>
+                                <td>
+                                    {{-- <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
+                                        alt="" style="object-fit: cover; border-radius: 50%"> --}}
+                                </td>
+                                <td>${e.name}</td>
+                                <td>
+                                    <form action="/users/${role}/${e.id}" method="get">
+                                        @include('mypartials.tahunajaran')
+                                        <button class="btn btn-sm text-white"
+                                            style="background-color: #3bae9c; width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Show</button>
+                                    </form>
+                                    @if (auth()->user()->can('edit_users'))
+                                    <form action="/users/${role}/${e.id}/edit" method="get">
+                                        @include('mypartials.tahunajaran')
+                                        <button class="btn btn-sm btn-warning text-white"
+                                            style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Edit</button>
+                                    </form>
+                                    @if ($role == 'siswa')
+                                    <form action="/users/siswa/${e.id}" method="post">
+                                        @include('mypartials.tahunajaran')
+                                        @csrf
+                                        <button class="btn btn-sm btn-danger text-white"
+                                            style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;"
+                                            onclick="return confirm('apakah anda yakin?')">Down</button>
+                                    </form>
+                                    @endif
+                                    @endif
+                                    @if (auth()->user()->can('delete_users'))
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="deleteData('/users/siswa/${e.id}')"
+                                        style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Hapus</button>
+                                    @endif
+                                </td>
+                            </tr>
+                            `
+                        );
+
+                        no++;
+                    })
+                },
+                error: function (response) {
+                    console.log(response)
+                },
+            });
+        }
+</script>
+@endpush

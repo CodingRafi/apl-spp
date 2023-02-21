@@ -1,19 +1,18 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Kelas</h4>
-        @if (auth()->user()->can('add_kelas'))
-        @if (count($tahun_ajarans) > 0)
-        <form action="{{ route('kelas.create') }}" method="get">
-            @include('mypartials.tahunajaran')
-            <button type="submit" class="btn btn-sm text-white position-absolute px-3"
-                style="top: .7rem; right: 1rem; background-color: #3bae9c;border-radius: 5px;font-weight: 500;">Tambah
-                Kelas</button>
-        </form>
-        @endif
-        @endif
+        <div class="d-flex justify-content-between mb-3">
+            <h4 class="card-title">Kelas</h4>
+            @can('add_kelas')
+            @if (count($tahun_ajarans) > 0)
+            <x-ButtonCustom class="btn btn-primary" route="{{ route('kelas.create') }}">
+                Tambah Kelas
+            </x-ButtonCustom>
+            @endif
+            @endcan
+        </div>
         <table class="table">
             <thead>
                 <tr class="text-center">
@@ -33,22 +32,19 @@
                     auth()->user()->can('upgrade_kelas'))
                     <td>
                         @if (auth()->user()->can('upgrade_kelas'))
-                        <button type="button" class="btn btn-sm btn-info text-white btn-upgrade"
-                            style="width: 5rem; margin: 0.1rem; border-radius: 5px; font-weight: 500;" data-id="{{ $kelas->id }}">
+                        <button type="button" class="btn btn-sm btn-info text-white btn-upgrade btn-self"
+                            data-id="{{ $kelas->id }}">
                             Upgrade
                         </button>
                         @endif
                         @if (auth()->user()->can('edit_kelas'))
-                        <form action="{{ route('kelas.edit', [$kelas->id]) }}" method="get">
-                            @include('mypartials.tahunajaran')
-                            <button type="submit" class="btn btn-sm btn-warning text-white"
-                                style="width: 5rem; margin: 0.1rem; border-radius: 5px; font-weight: 500;">Edit</button>
-                        </form>
+                        <x-ButtonCustom class="btn btn-sm btn-warning btn-self" route="{{ route('kelas.edit', [$kelas->id]) }}">
+                            Edit
+                        </x-ButtonCustom>
                         @endif
                         @if (auth()->user()->can('delete_kelas'))
-                        <button type="submit" class="btn btn-sm btn-danger"
-                            onclick="deleteData('{{ route('kelas.destroy', [$kelas->id]) }}')"
-                            style="width: 5rem; margin: 0.1rem; border-radius: 5px; font-weight: 500;">Hapus</button>
+                        <button type="submit" class="btn btn-sm btn-danger btn-self"
+                            onclick="deleteData('{{ route('kelas.destroy', [$kelas->id]) }}')">Hapus</button>
                         @endif
                     </td>
                     @endif
@@ -101,12 +97,11 @@
         $.post('{{ route("kelas.get_data") }}', {
                 tahun_awal: '{{ request("tahun_awal") }}',
                 tahun_akhir: '{{ request("tahun_akhir") }}',
-                semester: '{{ request("semester") }}',
             }, function(response){
                 $('#upgradeKelas select[name="tahun_ajaran_id"]').empty()
 
                 $.each(response.tahun_ajarans, function(i,e){
-                    $('#upgradeKelas select[name="tahun_ajaran_id"]').append(`<option value="${e.id}">${e.tahun_awal} - ${e.tahun_akhir} Semester ${e.semester}</option>`)
+                    $('#upgradeKelas select[name="tahun_ajaran_id"]').append(`<option value="${e.id}">${e.tahun_awal} - ${e.tahun_akhir}</option>`)
                 })
 
                 if (value_tahun_ajaran) {

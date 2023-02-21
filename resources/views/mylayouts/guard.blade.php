@@ -9,10 +9,6 @@
   <title>Login</title>
   <!-- plugins:css -->
   <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/png" />
-  <link rel="stylesheet" href="/template/vendors/feather/feather.css">
-  <link rel="stylesheet" href="/template/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="/template/vendors/css/vendor.bundle.base.css">
-  <link rel="stylesheet" href="/template/css/vertical-layout-light/style.css">
   <link rel="stylesheet" href="{{ asset('css/fstdropdown.css') }}">
   <!-- endinject -->
   {{-- bootstrap --}}
@@ -24,12 +20,6 @@
     @yield('content')
 
   <!-- plugins:js -->
-  <script src="/template/vendors/js/vendor.bundle.base.js"></script>
-  <script src="/template/js/off-canvas.js"></script>
-  <script src="/template/js/hoverable-collapse.js"></script>
-  <script src="/template/js/template.js"></script>
-  <script src="/template/js/settings.js"></script>
-  <script src="/template/js/todolist.js"></script>
   <script src="{{ asset('js/fstdropdown.js') }}"></script>
   <script>
     setFstDropdown();

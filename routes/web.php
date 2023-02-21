@@ -1,7 +1,19 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\KelasController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\RefAgamaController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KompetensiController;
+use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\RefKabupatenController;
+use App\Http\Controllers\RefKecamatanController;
+use App\Http\Controllers\RefKelurahanController;
+use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\ConfigurasiUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,19 +25,65 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function(){
+    return view('landingPage');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/register',[App\Http\Controllers\User\SekolahController::class, 'create'])->name('register');
+    Route::post('/register', [App\Http\Controllers\User\SekolahController::class, 'store'])->name('register.store');
+});
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::prefix('data-master')->group(function () {
+    Route::post('kabupaten', [RefKabupatenController::class, 'index'])->name('kabupaten_list');
+    Route::post('kecamatan', [RefKecamatanController::class, 'index'])->name('kecamatan_list');
+    Route::post('kelurahan', [RefKelurahanController::class, 'index'])->name('kelurahan_list');
+    Route::post('/get-data', [KelasController::class, 'get_data'])->name('kelas.get_data');
+});
+
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('roles', RoleController::class);
+
+    Route::get('edit/sekolah', [App\Http\Controllers\User\SekolahController::class, 'edit'])->name('sekolah.edit.own');
+    Route::patch('update/sekolah', [App\Http\Controllers\User\SekolahController::class, 'update'])->name('sekolah.update.own');
+    Route::prefix('data-master')->group(function () {
+        Route::middleware(['auth.sma_smk'])->group(function () {
+            Route::resource('kompetensi', KompetensiController::class);
+        });
+        Route::resource('kelas', KelasController::class);
+        Route::post('kelas/upgrade', [KelasController::class, 'upgrade'])->name('kelas.upgrade');
+        Route::resource('agama', RefAgamaController::class);
+        Route::resource('tahun-ajaran', TahunAjaranController::class);
+    });
+       
+    Route::post('/users/siswa/{id}/down', [UserController::class, 'down'])->name('users.down');
+    
+    Route::middleware(['check_role'])->group(function () {
+        Route::name('users.')->prefix('users')->group(function () {
+            // Route::resource('siswa', SiswaController::class);
+            Route::get('{role}', [UserController::class, 'index'])->name('index');
+            Route::post('{role}/list', [UserController::class, 'list'])->name('list');
+            Route::get('{role}/create', [UserController::class, 'create'])->name('create');
+            Route::post('{role}', [UserController::class, 'store'])->name('store');
+            Route::get('{role}/{id}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::get('{role}/{id}', [UserController::class, 'show'])->name('shows');
+            Route::patch('{role}/{id}', [UserController::class, 'update'])->name('update');
+            Route::delete('{role}/{id}', [UserController::class, 'destroy'])->name('destroy');
+        });
+
+        // Export dan Import User
+        Route::get('/import/users/{role}', [UserController::class, 'import']);
+        Route::post('/import/users/{role}', [UserController::class, 'store_import']);
+        Route::get('/export/users/{role}', [UserController::class, 'export']);
+    });
+
+    Route::resource('sekolah', App\Http\Controllers\SekolahController::class);
+    Route::get('/user-settings', [ConfigurasiUserController::class, 'index']);
+    Route::get('/edit-profile', [ConfigurasiUserController::class, 'editProfil']);
+    Route::post('/simpan', [ConfigurasiUserController::class, 'saveProfil']);
+    Route::get('/ubah-password', [ConfigurasiUserController::class, 'ubahPassword']);
+    Route::get('/reset', [ConfigurasiUserController::class, 'reset_password']);
 });
 
 require __DIR__.'/auth.php';

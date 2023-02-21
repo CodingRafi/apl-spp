@@ -1,13 +1,14 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
+<div class="d-flex justify-content-between mb-3">
+  <h1 class="h3"><strong>Edit {{ $role }}</strong></h1>
+  <x-ButtonCustom class="btn btn-danger rounded" route="{{ route('users.index', [$role]) }}">
+    Kembali
+  </x-ButtonCustom>
+</div>
 <div class="card">
   <div class="card-body">
-    <h4 class="card-title float-left">Update {{ $role }}</h4>
-    <form action="{{ route('users.index', [$role]) }}" method="get">
-      @include('mypartials.tahunajaran')
-      <button class="btn btn-sm btn-danger float-right text-white" type="submit" style="border-radius: 5px;font-weight: 500;">Kembali</button>
-    </form>
     @include('users.form')
   </div>
 </div>

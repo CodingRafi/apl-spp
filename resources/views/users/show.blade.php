@@ -1,6 +1,6 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
 {{-- @dd($user) --}}
     <div class="card">
         <div class="card-body">
@@ -41,17 +41,6 @@
                         <td class="col-lg-1">:</td>
                         <td class="col-lg-9">{{ $user->agama }}</td>
                     </tr>
-                    @if($role == 'guru')
-                    <tr class="row">
-                        <td class="col-lg-2" style="font-weight: 600;">Mata Pelajaran</td>
-                        <td class="col-lg-1">:</td>
-                        <td class="col-lg-9">
-                            @foreach ($user->mapel()->get() as $mapel)
-                                {{ $mapel['nama'] }},
-                            @endforeach
-                        </td>
-                    </tr>
-                    @endif
                     <tr class="row">
                         <td class="col-lg-2" style="font-weight: 600;">Provinsi</td>
                         <td class="col-lg-1">:</td>

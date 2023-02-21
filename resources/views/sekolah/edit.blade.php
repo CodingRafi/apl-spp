@@ -1,6 +1,6 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
 <div class="card">
     <div class="card-body">
         <h4 class="card-title" style="color: #369488">Edit Profile</h4>

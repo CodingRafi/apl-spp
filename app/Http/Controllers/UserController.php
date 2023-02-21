@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB, Hash, Auth;
-use App\Models\Rfid;
 use App\Models\User;
-use App\Models\Mapel;
 use App\Models\Kelas;
 use App\Models\ref_agama;
 use App\Models\TahunAjaran;
@@ -48,7 +46,6 @@ class UserController extends Controller
                 $data += ['kompetensis' => DB::table('kompetensis')->where('sekolah_id', Auth::user()->sekolah_id)->get()];
             }
             $data += ['kelas' => Kelas::getKelas($request)];
-            
         }
 
         return view('users.index', $data);
@@ -63,10 +60,6 @@ class UserController extends Controller
             'agamas' => $agamas,
             'role' => $role,
         ];
-        
-        if ($role == 'guru') {
-            $data += ['mapels' => DB::table('mapels')->where('sekolah_id', \Auth::user()->sekolah_id)->get()];
-        }
         
         if ($role == 'siswa') {
             $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
@@ -102,7 +95,6 @@ class UserController extends Controller
          
         if ($request->file('profil')) {
             $data['profil'] = $request->file('profil')->store('profil');
-            // dd($data);
         }
         
         $user = User::create($data);
@@ -114,14 +106,6 @@ class UserController extends Controller
             app('App\Http\Controllers\ProfileSiswaController')->store($user, $request);
         }else{
             app('App\Http\Controllers\ProfileUserController')->store($user, $request, $role);
-        }
-
-        if ($request->rfid_number) {
-            Rfid::create([
-                'rfid_number' => $request->rfid_number,
-                'user_id' => $user->id,
-                'status' => ($request->status_rfid ? (($request->status_rfid == 'on') ? 'aktif' : 'tidak') : 'tidak')
-            ]);
         }
 
         return TahunAjaran::redirectWithTahunAjaranManual(route('users.index', [$role]), $request,  'Berhasil menambahkan ' . $role);
@@ -149,11 +133,7 @@ class UserController extends Controller
             'role' => $role,
             'data' => $user
         ];
-        
-        if ($role == 'guru') {
-            $data += ['mapels' => DB::table('mapels')->where('sekolah_id', \Auth::user()->sekolah_id)->get()];
-        }
-        
+       
         if ($role == 'siswa') {
             if (check_jenjang()) {
                 $data += ['kompetensis' => DB::table('kompetensis')->where('sekolah_id', Auth::user()->sekolah_id)->get()];
@@ -174,26 +154,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
-
-        if ($request->rfid_number) {
-            $rfid = $user->rfid;
-            if ($rfid) {
-                $request->validate([
-                    'rfid_number' => [Rule::unique('rfids')->ignore($rfid->id)],
-                ]);
-
-                $rfid->update([
-                    'rfid_number' => $request->rfid_number,
-                    'status' => ($request->status_rfid   == 'on') ? 'aktif' : 'tidak'
-                ]);
-            }else{
-                Rfid::create([
-                    'rfid_number' => $request->rfid_number,
-                    'user_id' => $user->id,
-                    'status' => ($request->status_rfid == 'on') ? 'aktif' : 'tidak'
-                ]);
-            }
-        }
 
         $data = [
             'sekolah_id' => Auth::user()->sekolah_id,
@@ -281,32 +241,6 @@ class UserController extends Controller
         return Excel::download(new UsersExport($role, $request), $role.'.xlsx');
     }
 
-    public function createYayasan(){
-        $yayasan = User::whereHas("roles", function($q) { $q->where("name", 'yayasan'); })->where('sekolah_id', \Auth::user()->sekolah_id)->first();
-
-        if (!$yayasan) {
-            return view('createYayasan');
-        }else{
-            abort(403);
-        }
-    }
-
-    public function storeYayasan(Request $request){
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
-        ]);
-
-        $validatedData['password'] = \Hash::make($request->password);
-        $validatedData['sekolah_id'] = \Auth::user()->sekolah_id;
-
-        $user = User::create($validatedData);
-        $user->assignRole('yayasan');
-
-        return TahunAjaran::redirectWithTahunAjaranManual('/', $request, 'Berhasil menambahkan yayasan');
-    }
-
     public function down(Request $request, $id){
         $user = User::findOrFail($id);
 
@@ -323,18 +257,6 @@ class UserController extends Controller
                 $kelas_request = $user->kelas()->where('tahun_ajaran_id', $tahun_ajaran->id)->first();
     
                 if ($kelas_latest->key == $kelas_request->tingkat->key) {
-                    $absensi_pelajaran = $user->absensi_pelajaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->get();
-                    
-                    foreach ($absensi_pelajaran as $key => $absensi) {
-                        $absensi->delete();
-                    }
-    
-                    $absensis = $user->absensi()->where('tahun_ajaran_id', $tahun_ajaran->id)->get();
-    
-                    foreach ($absensis as $key => $absensi) {
-                        $absensi->delete();
-                    }
-    
                     $kelas_request->pivot->delete();
     
                     return redirect()->back()->with('msg_success', 'Berhasil di downgrade');
@@ -347,5 +269,10 @@ class UserController extends Controller
         }else{
             return redirect()->back()->with('msg_error', 'bukan siswa');
         }
+    }
+
+    public function list(Request $request, $role){
+        $users = User::getUser($request, $role, true, true, ['search' => $request->search, 'kelas' => $request->kelas, 'kompetensi' => $request->kompetensi]);
+        return response()->json($users, 200);
     }
 }

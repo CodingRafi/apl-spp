@@ -31,5 +31,5 @@
             </div>
         @enderror
     </div>
-    <button type="submit" class="btn text-white" style="background-color: #3bae9c">Simpan</button>
+    <button type="submit" class="btn btn-primary">Simpan</button>
 </form>

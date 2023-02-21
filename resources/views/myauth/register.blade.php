@@ -272,25 +272,6 @@
                 </div>
               </div>
 
-              <div class="tab" id="yayasan" style="display: none;">
-                <h5>Data user yayasan (opsional)</h5>
-                <div class="mb-3">
-                  <label for="nama" class="form-label">Nama yayasan</label>
-                  <input type="text" class="form-control name-yayasan" placeholder="Nama"
-                    name="name_yayasan" style="border-radius: 5px; width: 100%" value="{{ old('name_yayasan') }}">
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control email-yayasan" placeholder="Email"
-                    name="email_yayasan" style="border-radius: 5px; width: 100%" value="{{ old('email_yayasan') }}">
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control password-yayasan" placeholder="Password"
-                    name="password_yayasan" style="border-radius: 5px; width: 100%">
-                </div>
-              </div>
-
               <div class="mt-3" style="overflow:auto;">
                 <div style="float:right;">
                   <button class="btn text-white" type="button" id="prevBtn" onclick="nextPrev(-1)">Sebelumnya</button>
@@ -311,18 +292,6 @@
 @endsection
 
 @push('js')
-<script>
-  const nameYayasan = document.querySelector('.name-yayasan');
-  nameYayasan.addEventListener('keyup', function(e){
-      if(e.target.value.length > 0){
-        document.querySelector('.email-yayasan').required = true;
-        document.querySelector('.password-yayasan').required = true;
-      }else{
-        document.querySelector('.email-yayasan').required = false;
-        document.querySelector('.password-yayasan').required = false;
-      }
-  })
-</script>
 <script>
   var currentTab = 0; // Current tab is set to be the first tab (0)
   showTab(currentTab); // Display the current tab

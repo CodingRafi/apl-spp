@@ -1,6 +1,6 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
     <div class="card">
         <div class="card-body">
           <div class="title" style="display: flex; justify-content:space-between">

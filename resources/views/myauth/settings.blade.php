@@ -35,7 +35,7 @@
     </style>
 @endsection
 
-@section('container')
+@section('content')
     <div class="card" style=" background-color:#3bae9c; border-radius: 10px; padding: 3vw">
         <div class="card-body p-0">
             <div class="kiri" style="min-width: 20vw; display: flex; justify-content:center">
@@ -76,7 +76,7 @@
                     </div>
                     @endif
                     @if (Auth::user()->getTable() == 'users') 
-                        @if (Auth::user()->hasRole('guru') || Auth::user()->hasRole('karyawan'))
+                        @if (Auth::user()->hasRole('karyawan'))
                             @if (Auth::user()->nip)
                             <div class="data-profile" style="background-color: #3bae9c; padding: 10px; box-shadow: 0px 0px 5px grey; border-radius: 5px;">
                                 <div class="d-flex justify-content-center" style="min-width: 20vw;">

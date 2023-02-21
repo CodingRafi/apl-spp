@@ -1,9 +1,11 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
+<div class="d-flex justify-content-between mb-3 align-items-center">
+    <h1 class="h3"><strong>Tambah Kelas</strong></h1>
+</div>
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Create Kelas</h4>
         @include('kelas.form')
     </div>
 </div>

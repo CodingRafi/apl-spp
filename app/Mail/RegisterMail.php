@@ -11,21 +11,17 @@ class RegisterMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
-    public $yayasan;
     public $password;
-    public $password_yayasan;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $yayasan, $password, $password_yayasan)
+    public function __construct($user, $password)
     {
         $this->user = $user;
-        $this->yayasan = $yayasan;
         $this->password = $password;
-        $this->password_yayasan = $password_yayasan;
     }
 
     /**

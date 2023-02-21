@@ -7,69 +7,12 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-        }
-        .container{
-            background-color: #41D4BD;
-            padding: 0;
-        }
-        .navbar{
-            padding: 0px 80px 5px;
-        }
-        .container, .navbar{
-            min-width: 100%;
-            max-width: 100%;
-        }
-        .nav-link{
-            text-decoration: none;
-        }
-        .nav-link:hover{
-            color: white;
-            font-weight: 500;
-            transition: 100ms;
-        }
-        .btn-light{
-            color: #41D4BD;
-        }
-        .btn-light:hover{
-            background-color: #005c4e;
-            color: #fff;
-            border: #005c4e;
-        }
-        @media (max-width: 480px){
-            .absensi{
-                font-size: 50px;
-            }
-            .tapping{
-                width: 20rem;
-                float: right;
-            }
-            .navbar{
-                padding: 0!important;
-            }
-            .navbar-collapse{
-                text-align: left;
-                margin-bottom: 10px;
-            }
-            .btn-light{
-                width: 5rem;
-            }
-        }
-        @media (min-width: 480px){
-            .absensi{
-                font-size: 90px;
-            }
-        }
-    </style>
+   
 
-    <title>Go Tap Landing Page</title>
+    <title>SPP</title>
   </head>
   <body>
     <div class="container">
-        {{-- navbar --}}
         <nav class="navbar navbar-expand-lg navbar-light" style="border-bottom: 1px solid white">
             <div class="container-fluid mt-1 mb-1">
               <a class="navbar-brand" href="#">
@@ -89,17 +32,6 @@
               </div>
             </div>
         </nav>
-        {{-- end navbar --}}
-        {{-- content --}}
-        <div class="content">
-            <div class="row mt-5 m-0 p-0">
-                <div class="col-lg-8 p-0" style="margin-top: 130px;">
-                    <h1 class="text-center text-white fw-bold absensi" style="text-shadow: 0px 3px 15px #005c4e48">ABSENSI <br> TAPPING CARD</h1>
-                </div>
-                <img class="col-lg-4 p-0 tapping" style="margin-top: 150px;" src="{{ asset('img/tapping card.png') }}" alt="logo">
-            </div>
-        </div>
-        {{-- end content --}}
     </div>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

@@ -15,21 +15,12 @@ class TahunAjaran extends Model
         return $this->hasMany(Kelas::class);
     }
 
-    public function agenda(){
-        return $this->hasMany(Agenda::class);
-    }
-
-    public function absensi_pelajaran(){
-        return $this->hasMany(AbsensiPelajaran::class);
-    }
-
     public static function getTahunAjaran($request = null){
         $tahun_ajaran;
         if ($request) {
-            if($request->tahun_awal && $request->tahun_akhir && $request->semester){
+            if($request->tahun_awal && $request->tahun_akhir){
                 $tahun_ajaran_query = TahunAjaran::where('tahun_awal', $request->tahun_awal)
                                         ->where('tahun_akhir', $request->tahun_akhir)
-                                        ->where('semester', $request->semester)
                                         ->first();
                 
                 if($tahun_ajaran_query){
@@ -48,9 +39,9 @@ class TahunAjaran extends Model
     }
     
     public static function redirectWithTahunAjaran($route, $request, $message){
-        if($request->tahun_awal && $request->tahun_akhir && $request->semester){ 
+        if($request->tahun_awal && $request->tahun_akhir){ 
             return redirect()
-            ->route($route, ['tahun_awal' => $request->tahun_awal, 'tahun_akhir' => $request->tahun_akhir, 'semester' => $request->semester])
+            ->route($route, ['tahun_awal' => $request->tahun_awal, 'tahun_akhir' => $request->tahun_akhir])
             ->with('msg_success', $message);
         }else{
             return redirect()->route($route)->with('msg_success', $message);
@@ -58,8 +49,8 @@ class TahunAjaran extends Model
     }
 
     public static function redirectWithTahunAjaranManual($route, $request, $message){
-        if($request->tahun_awal && $request->tahun_akhir && $request->semester){ 
-            return redirect($route . '?tahun_awal='. $request->tahun_awal . '&tahun_akhir=' . $request->tahun_akhir . '&semester='. $request->semester)
+        if($request->tahun_awal && $request->tahun_akhir){ 
+            return redirect($route . '?tahun_awal='. $request->tahun_awal . '&tahun_akhir=' . $request->tahun_akhir)
             ->with('msg_success', $message);
         }else{
             return redirect($route)->with('msg_success', $message);

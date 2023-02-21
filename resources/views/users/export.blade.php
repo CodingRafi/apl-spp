@@ -26,8 +26,6 @@
             <th align="center">Kecamatan</th>
             <th align="center">Kelurahan</th>
             <th align="center">Jalan</th>
-            <th align="center">RFID</th>
-            <th align="center">Status RFID</th>
         </tr>
     </thead>
     <tbody>
@@ -59,8 +57,6 @@
             <td align="center">{{ $user->kecamatan }}</td>
             <td align="center">{{ $user->kelurahan }}</td>
             <td align="center">{{ $user->jalan }}</td>
-            <td align="center">{{ $user->rfid ? $user->rfid->rfid_number : '' }}</td>
-            <td align="center">{{ $user->rfid ? $user->rfid->status : '' }}</td>
         </tr>
         @endforeach
     </tbody>

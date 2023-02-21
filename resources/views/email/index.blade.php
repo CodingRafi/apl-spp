@@ -38,21 +38,7 @@
       <br>
       <span>Password: {{ $password }}</span>
       <br>
-
-      @if ($yayasan)
-      <br>
-      <span><strong>2. Yayasan Sekolah</strong></span>
-      <br>
-      <span>Email : {{ $yayasan->email }}</span>
-      <br>
-      <span>Password: {{ $password_yayasan }}</span>
-      <br>
-      @endif
   </div>
 </body>
 
 </html>
-
-{{-- nama sekolah
-npsn sekolah
-data admin & yayasan : nama, email, password --}}

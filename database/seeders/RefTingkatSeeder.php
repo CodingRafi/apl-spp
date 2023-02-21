@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use DB;
 
 class RefTingkatSeeder extends Seeder
 {
@@ -14,6 +15,11 @@ class RefTingkatSeeder extends Seeder
      */
     public function run()
     {
-        //
+        foreach (config('services.tingkat') as $key => $row) {
+            DB::table('ref_tingkats')->insert([
+                'key' => $key,
+                'romawi' => $row
+            ]);
+        }
     }
 }

@@ -1,88 +1,18 @@
 @extends('mylayouts.main')
 
-@section('tambahcss')
+@push('css')
     <style>
         .title{
             font-weight: 500;
         }
     </style>
-@endsection
+@endpush
 
-@section('container')
+@section('content')
 @if (Auth::user()->hasRole('super_admin'))
 <div class="card">
     <div class="card-body">
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingOne">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        Sekolah Tersedia : {{ $countSekolah }}
-                    </button>
-                </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <div class="table-responsive table-borderless">
-                            <table>
-                                @foreach ($sekolah as $s)
-                                <tr>
-                                    <td>- {{ $s->nama }}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                        Role Tersedia : {{ $countRole }}
-                    </button>
-                </h2>
-                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <div class="table-responsive table-borderless">
-                            <table>
-                                @foreach ($roles as $role)
-                                @if ($role->name != 'super_admin')
-                                <tr>
-                                    <td>- {{ $role->name }}</td>
-                                </tr>
-                                @endif
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                        Tahun Ajaran Tersedia : {{ $countTahunAjaran }}
-                    </button>
-                </h2>
-                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-                    data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <div class="table-responsive table-borderless">
-                            <table>
-                                @foreach ($tahun_ajarans as $tahun_ajaran)
-                                <tr>
-                                    <td>- {{ $tahun_ajaran->tahun_awal }}/{{ $tahun_ajaran->tahun_akhir }} Semester {{
-                                        $tahun_ajaran->semester }}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 @else
@@ -151,47 +81,6 @@
             </div>
         </div>
     </div>
-    {{-- @if (auth()->user()->can('view_users') && !Auth::user()->hasRole('yayasan'))
-    <div class="col-md-4">
-        <div class="card mb-3" style="height: 15rem;overflow: auto;">
-            <div class="card-body">
-                <div class="title-yayasan" style="display: flex; justify-content: space-between">
-                    <h4 class="card-title">Yayasan</h4>
-                    @if (!$yayasan)
-                    <form action="/create-yayasan" method="get">
-                        @include('mypartials.tahunajaran')
-                        <button type="submit" class="btn btn-sm text-white p-0"
-                            style="background-color: #369488; min-width: 5rem; height: 1.5rem; font-weight: 500; border-radius: 5px;">Tambah</button>
-                    </form>
-                    @endif
-                </div>
-                @if ($yayasan)
-                <div class="table table-responsive table-hover text-center" style="border-radius: 3px;">
-                    <table class="table align-middle">
-                        <thead style="background-color: #3bae9ddc; color: aliceblue;">
-                            <tr>
-                                <th style="width: 5%;">Nama</th>
-                                <th style="width: 5%;">Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="width: 15%; height: 8vh">{{ $yayasan->profile_user->name }}</td>
-                                <td style="width: 15%; height: 8vh">{{ $yayasan->email }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                @else
-                <div class="alert alert-danger" role="alert">
-                    Maaf tidak ada data yayasan ditemukan
-                </div>
-                @endif
-            </div>
-        </div>
-    </div>
-    @endif --}}
-
 @if (auth()->user()->can('view_users') || auth()->user()->can('view_kompetensi'))
 <div class="container-fluid p-0">
     <div class="row">
@@ -234,41 +123,11 @@
 </div>
 @endif
 
-@if (auth()->user()->can('view_mapel'))
-<div class="container-fluid p-0 mb-3">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card" style="min-height: 15rem;">
-                <div class="card-body">
-                    <h4 class="card-title">Mapel</h4>
-                    <canvas id="mapel"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endif
-@endif
-
-@if (auth()->user()->can('show_absensi'))
-<div class="container-fluid p-0 mb-3">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card" style="min-height: 15rem;">
-                <div class="card-body">
-                    <h4 class="card-title">Absensi</h4>
-                    <canvas id="absensi-user"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endif
-
 @endsection
 
-@section('tambahjs')
-<script src="{{ asset('template/vendors/chart.js/Chart.min.js') }}"></script>
+@push('js')
+<script src="{{ asset('js/Chart.min.js') }}"></script>
 @if (auth()->user()->can('view_users'))
 {{-- !Data User --}}
 <script>
@@ -368,62 +227,6 @@
 </script>
 @endif
 
-@if (auth()->user()->can('view_mapel'))
-{{-- !Data Mapel --}}
-<script>
-    const data_mapel = {
-        labels: {!! json_encode($mapels['key']) !!},
-        datasets: [{
-        label: 'Total guru',
-        data: {!! json_encode($mapels['data']) !!},
-        backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(255, 206, 86, 0.5)',
-                'rgba(75, 192, 192, 0.5)',
-                'rgba(153, 102, 255, 0.5)',
-                'rgba(255, 159, 64, 0.5)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-        borderWidth: 1,
-        fill: false
-        }]
-    };
-
-    const options_mapel = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        },
-        legend: {
-            display: false
-        },
-        elements: {
-            point: {
-                radius: 0
-            }
-        }
-    };
-
-    const mapelChartCanvas = $("#mapel").get(0).getContext("2d");
-    new Chart(mapelChartCanvas, {
-      type: 'bar',
-      data: data_mapel,
-      options: options_mapel
-    });
-</script>
-@endif
-
 @if (auth()->user()->can('view_kelas'))
 {{-- !Data Kelas --}}
 <script>
@@ -479,34 +282,4 @@
     });
 </script>
 @endif
-
-@if (auth()->user()->can('show_absensi'))
-<script>
-    const canvasAbsensiUser = document.getElementById("absensi-user").getContext('2d');
-
-    const data_absensi_user = {
-        labels: {!! json_encode(config('services.bulan')) !!},
-        datasets: {!! json_encode($absensis) !!}
-    };
-
-    const options_absensi_user = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                },
-                scaleLabel: {
-                    display: false,
-                }
-            }]            
-        }  
-    };
-
-    new Chart(canvasAbsensiUser, {
-        type: 'line',
-        data: data_absensi_user,
-        options: options_absensi_user
-    });
-</script>
-@endif
-@endsection
+@endpush

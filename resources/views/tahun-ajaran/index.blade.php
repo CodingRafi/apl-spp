@@ -1,23 +1,20 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
 <div class="card">
     <div class="card-body">
         <div class="title d-flex justify-content-between">
             <h4 class="card-title">Tahun Ajaran</h4>
             <a href="{{ route('tahun-ajaran.create') }}" 
-            class="btn btn-sm text-white float-right" style="height: fit-content;
-            background-color: #3bae9c;border-radius: 5px;font-weight: 500;">Tambah
-                Tahun Ajaran</a>
+            class="btn btn-primary text-white float-right">Tambah</a>
         </div>
-        <div class="table table-responsive table-hover text-center">
+        <div class="table table-responsive table-hover text-center mt-2">
             <table class="table align-middle">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
                         <th scope="col">Tahun Awal</th>
                         <th scope="col">Tahun Akhir</th>
-                        <th scope="col">Semester</th>
                         <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -28,12 +25,10 @@
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>{{ $tahun_ajaran->tahun_awal }}</td>
                         <td>{{ $tahun_ajaran->tahun_akhir }}</td>
-                        <td>{{ $tahun_ajaran->semester }}</td>
                         <td>{{ $tahun_ajaran->status }}</td>
                         <td>
                             <a href="{{ route('tahun-ajaran.edit', [$tahun_ajaran->id]) }}" 
-                                class="btn btn-sm btn-warning text-white px-3" 
-                                style="border-radius: 5px;font-weight: 500;">Edit</a>
+                                class="btn btn-sm btn-warning text-white px-3">Edit</a>
                         </td>
                     </tr>
                     @endforeach

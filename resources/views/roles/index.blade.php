@@ -1,87 +1,46 @@
 @extends('mylayouts.main')
 
-@section('tambahancss')
-<style>
-    .accordion.accordion-without-arrow .accordion-button::after {
-        background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpath id='a' d='m1.532 12 6.182-6-6.182-6L0 1.487 4.65 6 0 10.513z'/%3E%3C/defs%3E%3Cg transform='translate%282.571%29' fill='none' fill-rule='evenodd'%3E%3Cuse fill='%23435971' xlink:href='%23a'/%3E%3Cuse fill-opacity='.1' fill='%23566a7f' xlink:href='%23a'/%3E%3C/g%3E%3C/svg%3E%0A") !important;
-    }
-</style>
-@endsection
+@section('content')
+<div class="d-flex justify-content-between mb-3 align-items-center">
+    <h1 class="h3"><strong>Roles</strong></h1>
+    @can('add_roles')
+    <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#modalRole">
+        Buat Role
+    </button>
+    @endcan
+</div>
 
-@section('container')
-<div class="container-xxl flex-grow-1 container-p-y">
-
-    <div class="card">
-        <div class="container-fluid">
-            <div class="row mt-3">
-                <div class="col-md-10">
-                    <h5 class="card-header" style="background-color: white">Users</h5>
-                </div>
-                <div class="col-md-2 d-flex justify-content-end align-items-center">
-                    @can('add_roles')
-                    <button type="button" class="btn btn-sm text-white tombol-buat-user"
-                        style="background-color: #3bae9c; border-radius: 5px; font-weight: 500;" data-bs-toggle="modal"
-                        data-bs-target="#modalRole">
-                        Buat Role
-                    </button>
-                    @endcan
-                </div>
-            </div>
-        </div>
-        <div class="container" style="height: 65vh;overflow: auto;">
-            <div id="accordionIcon" class="accordion accordion-flush mt-3 accordion-without-arrow">
+<div class="card">
+    <div class="card-body">
+        <div class="container-fluid p-0 mt-2">
+            <ul class="nav nav-pills card-header-pills border-0 m-0 pb-0 gap-3" id="tab-main"
+                style="flex-wrap: nowrap;">
                 @foreach ($roles as $key => $role)
-                @if ($role->name != 'super_admin')
-                <div class="accordion-item">
-                    <h2 class="accordion-header text-body d-flex justify-content-between" id="accordionIconOne">
-                        <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse"
-                            data-bs-target="#accordionIcon-{{ $loop->iteration }}"
-                            aria-controls="accordionIcon-{{ $loop->iteration }}" style="text-transform: capitalize;">
-                            {{ $loop->iteration - 1 }}. Role {{ $role->name }}
-                        </button>
-                    </h2>
-
-                    <div id="accordionIcon-{{ $loop->iteration }}" class="accordion-collapse collapse"
-                        data-bs-parent="#accordionIcon">
-                        <div class="accordion-body">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <h5 class="card-title ps-0">Hak akses untuk role {{ $role->name }}</h5>
-                                    </div>
-                                    <div class="col-md-2">
-                                        @can('edit_roles')
-                                        @if ($role->name == 'super_admin')
-                                        <a href="{{ route('roles.edit', $role->id) }}"
-                                            class="btn btn-sm btn-warning float-right disabled"
-                                            style="border-radius: 5px; font-weight: 500;">Edit</a>
-                                        @else
-                                        <a href="{{ route('roles.edit', $role->id) }}"
-                                            class="btn btn-sm btn-warning text-white float-right"
-                                            style="border-radius: 5px; font-weight: 500;">Edit</a>
-                                        @endif
-                                        @endcan
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- <p>{{ $rolePermission->name }}</p> --}}
-                            <div class="container-fluid">
-                                <div class="row flex-wrap">
-                                    @foreach ($rolePermissions[$key] as $rolePermission)
-                                    <div class="col-md-3 mb-2 mt-2" style="text-transform: capitalize;">{{
-                                        str_replace("_", " ", $rolePermission->name) }}</div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
+                <li class="nav-item" style="white-space: nowrap;">
+                    <a class="nav-link a-tab {{ $key == 0 ? 'active' : '' }} text-capitalize" href="#{{ $role->name }}"
+                        role="tab" aria-controls="{{ $role->name }}">{{ $role->name }}</a>
+                </li>
+                @endforeach
+            </ul>
+            <div class="tab-content mt-3 border-0 pt-0">
+                @foreach ($roles as $key => $role)
+                <div class="tab-pane {{ $key == 0 ? 'active' : '' }}" id="{{ $role->name }}" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">Hak akses {{ $role->name }}</h5>
+                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning text-white mb-3">Edit</a>
+                    </div>
+                    <div class="row">
+                        @forelse ($rolePermissions[$key] as $rolePermission)
+                        <div class="col-md-3 my-2 text-capitalize">{{ str_replace("_", " ", $rolePermission->name) }}</div>
+                        @empty
+                            <span class="text-center my-3">-- Tidak ada hak akses --</span>
+                        @endforelse
                     </div>
                 </div>
-                @endif
                 @endforeach
             </div>
         </div>
     </div>
-
 </div>
 
 @can('add_roles')
@@ -126,7 +85,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn text-white" style="background-color: #3bae9c">Buat Role</button>
+                    <button type="submit" class="btn btn-primary">Buat Role</button>
                 </div>
             </form>
         </div>
@@ -135,7 +94,7 @@
 @endcan
 @endsection
 
-@section('tambahjs')
+@push('js')
 @if($errors->any())
 <script>
     $(document).ready(function(){
@@ -143,4 +102,17 @@
     })
 </script>
 @endif
-@endsection
+<script>
+    $('#tab-main .a-tab').on('click', function (e) {
+        console.log('oke')
+        e.preventDefault()
+        $('#tab-main a').removeClass('active');
+        $('.tab-pane').removeClass('active');
+        if ($(this).parent()[0].closest('.dropdown-menu')) {
+            $(this).parent().parent().addClass('active')
+        }
+        $(this).addClass('active');
+        $(`.tab-pane${$(this).attr('href')}`).addClass('active');
+    })
+</script>
+@endpush

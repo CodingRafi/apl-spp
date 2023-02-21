@@ -1,19 +1,4 @@
-<style>
-    .nav-pills .show>.nav-link {
-        background-color: transparent !important;
-    }
-
-    .dropdown-menu.show {
-        top: .4rem !important;
-        left: -8rem !important;
-    }
-
-    .nama-koleksi {
-        font-size: 16px;
-    }
-</style>
-
-<form class="mt-5"
+<form class="mt-3"
     action="{{ (isset($data)) ? route('users.update', ['id' => $data->user_id   , 'role' => $role]) : route('users.store', [$role]) }}"
     method="POST" enctype="multipart/form-data">
     @if (isset($data))
@@ -176,27 +161,6 @@
         </div>
         @enderror
     </div>
-    @if ($role == 'guru')
-    <div class="mb-3">
-        <label for="mapel" class="form-label">Mapel</label>
-        <select class="fstdropdown-select @error('mapel[]') is-invalid @enderror" name="mapel[]"
-            value="{{ old('mapel[]') }}" style=" font-size: 15px; height: 6.5vh;" multiple id="mapel">
-            @foreach ($mapels as $mapel)
-            @if (isset($data) && count($data->mapel) > 0)
-            <option value="{{ $mapel->id }}" {{ (in_array($mapel->id, $data->mapel) ? 'selected' : '') }}>{{ $mapel->nama }}
-            </option>
-            @else
-            <option value="{{ $mapel->id }}" {{ old('mapel') ? (in_array($mapel->id, old('mapel')) ? 'selected' : '') : ''}}>{{ $mapel->nama }}</option>
-            @endif
-            @endforeach
-        </select>
-        @error('mapel')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    @endif
     <div class="mb-3">
         <label for="ref_provinsi_id" class="form-label">Provinsi</label>
         <select class="between-input-item-select form-control" name="ref_provinsi_id" id="ref_provinsi_id">
@@ -261,32 +225,12 @@
         <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="*123456*" style=" font-size: 15px; height: 6.5vh;" id="password" disabled>
     </div>
     @endif
-    <div class="">
-        <label class="form-label">Status Rfid</label>
-    </div>
-    <div class="form-check">
-        {{-- @dd($data) --}}
-        <input class="form-check-input" type="radio" name="status_rfid" id="aktif" value="on" {{ isset($data) ?
-            (($data) ?
-        ($data->status == 'aktif') ? 'checked' : '' : '') : '' }}>
-        <label class="form-check-label" for="aktif" style="margin-left: -0.1rem">
-            Aktif
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="status_rfid" id="tidak" value="tidak" {{ isset($data) ?
-            (($data) ?
-        ($data->status == 'tidak') ? 'checked' : '' : '') : '' }}>
-        <label class="form-check-label" for="tidak" style="margin-left: -0.1rem">
-            Tidak
-        </label>
-    </div>
+    
     <div class="mb-3">
         <label for="foto_profil" class="form-label">Foto Profil</label>
         <div class="row">
             <div class="col-md">
-                <input type="file" class="form-control form-control-lg" name="profil" style=" font-size: 15px; height: 6.5vh;"
-                    id="foto_profil">
+                <input type="file" class="form-control form-control-lg" name="profil" id="foto_profil">
             </div>
             @if (isset($data) && $data->profil != '/img/profil.png')
             <div class="col-md-3">
@@ -294,17 +238,6 @@
             </div>
             @endif
         </div>
-    </div>
-    <div class="mb-3">
-        <label for="rfid" class="form-label">Rfid</label>
-        <input type="text" class="form-control @error('rfid_number') is-invalid @enderror" placeholder="Masukan Rfid"
-            name="rfid_number" value="{{ isset($data) ? $data ? ($data->rfid_number) : '' : old('rfid') }}"
-            style=" font-size: 15px; height: 6.5vh;" id="rfid">
-        @error('rfid_number')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
     </div>
     <button type="submit" class="btn text-white mt-3" style="background-color: #3bae9c">Simpan</button>
 </form>

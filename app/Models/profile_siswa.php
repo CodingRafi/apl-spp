@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class profile_siswa extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function kelas(){
+        return $this->belongsTo(Kelas::class);
+    }
 }

@@ -70,12 +70,11 @@ class TahunAjaranController extends Controller
         TahunAjaran::create([
             'tahun_awal' => $request->tahun_awal,
             'tahun_akhir' => $request->tahun_akhir,
-            'semester' => $request->semester,
             'status' => ($status == 'on') ? 'aktif' : 'tidak',
             'sekolah' => \Auth::user()->sekolah,
         ]);
 
-        return redirect()->route('tahun-ajaran.index')->with('msg_success', 'Berhasil Menambahkan Tahun Ajaran Baru');
+        return redirect()->route('tahun-ajaran.index')->with('msg_success', 'Berhasil ditambah');
     }
 
     /**
@@ -122,7 +121,6 @@ class TahunAjaranController extends Controller
         $tahunAjaran->update([
             'tahun_awal' => $request->tahun_awal,
             'tahun_akhir' => $request->tahun_akhir,
-            'semester' => $request->semester,
             'status' => ($request->status) ? 'aktif' : 'tidak',
         ]);
         
@@ -132,7 +130,7 @@ class TahunAjaranController extends Controller
             ]);
         }
 
-        return redirect()->route('tahun-ajaran.index')->with('msg_success', 'Berhasil terupdate');
+        return redirect()->route('tahun-ajaran.index')->with('msg_success', 'Berhasil diubah');
     }
 
     /**

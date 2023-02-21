@@ -119,47 +119,16 @@ class SekolahController extends Controller
      */
     public function destroy(Sekolah $sekolah)
     {
-        foreach ($sekolah->absensi_pelajaran as $key => $absensi_pelajaran) {
-            foreach ($absensi_pelajaran->presensi as $key => $presensi) {
-                $presensi->delete();
-            }
-    
-            $absensi_pelajaran->delete();
-        }
-
-        foreach ($sekolah->kelompok as $key => $kelompok) {
-            $kelompok->user()->sync([]);
-            $kelompok->kelompok_jadwal()->delete();
-            $kelompok->delete();
-        }
-
         foreach ($sekolah->user as $key => $user) {
             User::deleteUser($user->getRoleNames()[0], $user->id);
         }
 
         foreach ($sekolah->kelas as $key => $kelas) {
-            foreach ($kelas->agenda as $key => $agenda) {
-                $agenda->delete();
-            }
             $kelas->delete();
         }
 
         foreach ($sekolah->kompetensi as $key => $kompetensi) {
             $kompetensi->delete();
-        }
-
-        foreach ($sekolah->mapel as $key => $mapel) {
-            foreach ($mapel->agenda as $key => $agenda) {
-                $agenda->delete();
-            }
-            $mapel->delete();
-        }
-
-        foreach ($sekolah->waktu_pelajaran as $key => $waktu_pelajaran) {
-            foreach ($waktu_pelajaran->agenda as $key => $agenda) {
-                $agenda->delete();
-            }
-            $waktu_pelajaran->delete();
         }
 
         foreach ($sekolah->tingkat as $key => $tingkat) {

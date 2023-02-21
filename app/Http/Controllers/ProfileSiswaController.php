@@ -2,85 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TahunAjaran;
 use App\Models\profile_siswa;
 use App\Http\Requests\Storeprofile_siswaRequest;
 use App\Http\Requests\Updateprofile_siswaRequest;
 
 class ProfileSiswaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function store($user, $request)
     {
-        //
+        profile_siswa::create([
+            'user_id' => $user->id,
+            'name' => $request->name,
+            'nisn' => $request->nisn,
+            'nipd' => $request->nipd,
+            'nik' => $request->nik,
+            'kelas_id' => $request->kelas_id,
+            'kompetensi_id' => $request->kompetensi_id,
+            'jk' => $request->jk,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'ref_agama_id' => $request->ref_agama_id,
+            'ref_provinsi_id' => $request->ref_provinsi_id,
+            'ref_kabupaten_id' => $request->ref_kabupaten_id,
+            'ref_kecamatan_id' => $request->ref_kecamatan_id,
+            'ref_kelurahan_id' => $request->ref_kelurahan_id,
+            'jalan' => $request->jalan,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Storeprofile_siswaRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Storeprofile_siswaRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\profile_siswa  $profile_siswa
-     * @return \Illuminate\Http\Response
-     */
-    public function show(profile_siswa $profile_siswa)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\profile_siswa  $profile_siswa
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(profile_siswa $profile_siswa)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Updateprofile_siswaRequest  $request
-     * @param  \App\Models\profile_siswa  $profile_siswa
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Updateprofile_siswaRequest $request, profile_siswa $profile_siswa)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\profile_siswa  $profile_siswa
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(profile_siswa $profile_siswa)
-    {
-        //
+    public function update($user, $request){
+        $user->profile_siswa->update([
+            'name' => $request->name,
+            'nisn' => $request->nisn,
+            'nipd' => $request->nipd,
+            'nik' => $request->nik,
+            'kelas_id' => $request->kelas_id,
+            'kompetensi_id' => $request->kompetensi_id,
+            'jk' => $request->jk,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'ref_agama_id' => $request->ref_agama_id,
+            'ref_provinsi_id' => $request->ref_provinsi_id,
+            'ref_kabupaten_id' => $request->ref_kabupaten_id,
+            'ref_kecamatan_id' => $request->ref_kecamatan_id,
+            'ref_kelurahan_id' => $request->ref_kelurahan_id,
+            'jalan' => $request->jalan,
+        ]);
     }
 }

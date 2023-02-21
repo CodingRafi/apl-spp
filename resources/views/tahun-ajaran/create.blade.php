@@ -1,9 +1,12 @@
 @extends('mylayouts.main')
 
-@section('container')
+@section('content')
+<div class="d-flex justify-content-between mb-3 align-items-center">
+    <h1 class="h3"><strong>Tambah Tahun Ajaran</strong></h1>
+</div>
+
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Create Tahun Ajaran</h4>
         <form action="{{ route('tahun-ajaran.store') }}" method="POST">
             @csrf
             <div class="mb-3">
@@ -26,18 +29,6 @@
                 </div>
                 @enderror
             </div>
-            <div class="mb-3">
-                <label for="semester" class="form-label">Semester</label>
-                <select class="form-select @error('semester') is-invalid @enderror" name="semester" id="semester">
-                    <option value="ganjil">Ganjil</option>
-                    <option value="genap">Genap</option>
-                </select>
-                @error('semester')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
             <div class="mb-3 ml-4">
                 <input class="form-check-input" type="checkbox" name="status" onclick="isChecked()">
                 <label class="form-label message">Tidak Aktif</label>
@@ -48,20 +39,14 @@
 </div>
 @endsection
 
-@section('tambahjs')
+@push('js')
     <script>
-
         function isChecked(){
-            if(document.querySelector('.form-check-input').
-            checked){
-                document.querySelector('.message').
-                textContent = 'Aktif';
+            if($(".form-check-input").is(":checked")){
+                $('.message').html('Aktif');
             }else{
-                document.querySelector('.message').
-                textContent = 'Tidak Aktif';
+                $('.message').html('Tidak Aktif');
             }
         }
-
-
     </script>
-@endsection
+@endpush
