@@ -126,20 +126,11 @@
                 @endforeach
               </select>
             </div>
-            <div class="mb-3 div-email" style="display: none;">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control input-email" id="email" placeholder="name@example.com"
-                name="login" style="width: 100%;" disabled>
+            <div class="mb-3 login">
+              <label for="login" class="form-label">Email</label>
+              <input type="email" class="form-control" id="login" name="login" style="width: 100%;" disabled placeholder="Masukkan email">
             </div>
-            <div class="mb-3 div-nip" style="display: none;">
-              <label for="nip" class="form-label">NIP</label>
-              <input type="number" class="form-control input-nip" id="nip" placeholder="NIP" name="login">
-            </div>
-            <div class="mb-3 div-nipd" style="display: none;">
-              <label for="nipd" class="form-label">NIPD</label>
-              <input type="number" class="form-control input-nipd" id="nipd" placeholder="NIPD" name="login">
-            </div>
-            <div class="mb-3 div-password" style="display: none;">
+            <div class="mb-3 password">
               <label class="form-label" for="password">Password</label>
               <input type="password" id="password" class="form-control input-password" name="password"
                 style="width: 100%; border: 1px solid rgb(205, 205, 205); border-radius: 5px"
@@ -166,7 +157,7 @@
             <div class="mb-3">
               <div class="d-grid gap-2">
                 <button class="btn text-white tombol-login" type="submit"
-                  style="background: #3bae9c; width: 100%; display: none;" disabled>Masuk</button>
+                  style="background: #3bae9c; width: 100%;" disabled>Masuk</button>
               </div>
             </div>
           </form>
@@ -181,31 +172,19 @@
 @push('js')
 <script>
   $('.select-pilihan').on('change', function(){
-    console.log($(this).val())
     if ($(this).val() == '') {
-      $('.div-email input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-nip input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-nipd input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-password input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.tombol-login').css('display', 'none').attr('disabled', 'disabled');
-    }else if($(this).val() == 'siswa'){
-      $('.div-email input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-nip input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-nipd input').val('').removeAttr('disabled').parent().css('display', 'block');
-      $('.div-password input').val('').removeAttr('disabled').parent().css('display', 'block');
-      $('.tombol-login').css('display', 'block').removeAttr('disabled');
-    }else if($(this).val() == 'super_admin' || $(this).val() == 'admin'){
-      $('.div-email input').val('').removeAttr('disabled').parent().css('display', 'block');
-      $('.div-nip input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-nipd input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-password input').val('').removeAttr('disabled').parent().css('display', 'block');
-      $('.tombol-login').css('display', 'block').removeAttr('disabled');
+      $('.login input, .password input, .tombol-login').attr('disabled', 'disabled').val();
     }else{
-      $('.div-email input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-nip input').val('').removeAttr('disabled').parent().css('display', 'block');
-      $('.div-nipd input').val('').attr('disabled', 'disabled').parent().css('display', 'none');
-      $('.div-password input').val('').removeAttr('disabled').parent().css('display', 'block');
-      $('.tombol-login').css('display', 'block').removeAttr('disabled');
+      $('.password input').val('').removeAttr('disabled');
+      $('.tombol-login').removeAttr('disabled');
+
+      if($(this).val() == 'siswa'){
+        $('.login input').val('').attr('type', 'number').removeAttr('disabled').attr('placeholder', 'Masukkan NIPD').parent().children("label").html('NIPD');
+      }else if($(this).val() == 'super_admin' || $(this).val() == 'admin'){
+        $('.login input').val('').attr('type', 'email').removeAttr('disabled').attr('placeholder', 'Masukkan email').parent().children("label").html('Email');
+      }else{
+        $('.login input').val('').attr('type', 'number').removeAttr('disabled').attr('placeholder', 'Masukkan NIP').parent().children("label").html('NIP');
+      }
     }
   })
 </script>

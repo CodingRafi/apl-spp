@@ -1,13 +1,13 @@
 @extends('mylayouts.main')
 
 @section('content')
+<div class="d-flex justify-content-between mb-3">
+    <h4><strong>Tahun Ajaran</strong></h4>
+    <a href="{{ route('tahun-ajaran.create') }}" 
+    class="btn btn-primary text-white float-right">Tambah</a>
+</div>
 <div class="card">
     <div class="card-body">
-        <div class="title d-flex justify-content-between">
-            <h4 class="card-title">Tahun Ajaran</h4>
-            <a href="{{ route('tahun-ajaran.create') }}" 
-            class="btn btn-primary text-white float-right">Tambah</a>
-        </div>
         <div class="table table-responsive table-hover text-center mt-2">
             <table class="table align-middle">
                 <thead>

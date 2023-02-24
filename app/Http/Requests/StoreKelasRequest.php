@@ -24,7 +24,7 @@ class StoreKelasRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'tingkat_id' => 'required'
         ];
     }
 }

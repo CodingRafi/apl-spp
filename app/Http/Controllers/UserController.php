@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB, Hash, Auth;
 use App\Models\User;
 use App\Models\Kelas;
+use App\Models\m_spp;
 use App\Models\ref_agama;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
@@ -38,8 +39,6 @@ class UserController extends Controller
             'role' => $role
         ];
         
-        $users = User::role('siswa');
-        
         if ($role == 'siswa') {
             $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
             if (check_jenjang()) {
@@ -60,13 +59,15 @@ class UserController extends Controller
             'agamas' => $agamas,
             'role' => $role,
         ];
-        
+
         if ($role == 'siswa') {
             $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
             if (check_jenjang()) {
                 $data += ['kompetensis' => DB::table('kompetensis')->where('sekolah_id', Auth::user()->sekolah_id)->get()];
             }
-            $data += ['kelas' => Kelas::getKelas($request)];
+
+            $spps = m_spp::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            $data += ['kelas' => Kelas::getKelas($request), 'spps' => $spps];
         }
 
         return view('users.create', $data);
@@ -83,7 +84,8 @@ class UserController extends Controller
         if ($role == 'siswa') {
             $request->validate([
                 'nipd' => 'required|unique:users',
-                'nisn' => 'required|unique:profile_siswas'
+                'nisn' => 'required|unique:profile_siswas',
+                'spp_id' => 'required'
             ]);
             $data += ['nipd' => $request->nipd];
         }else{
@@ -138,7 +140,8 @@ class UserController extends Controller
             if (check_jenjang()) {
                 $data += ['kompetensis' => DB::table('kompetensis')->where('sekolah_id', Auth::user()->sekolah_id)->get()];
             }
-            $data += ['kelas' => Kelas::getKelas($request)];
+            $spps = m_spp::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            $data += ['kelas' => Kelas::getKelas($request), 'spps' => $spps];
         }
         return view('users.update', $data);
     }

@@ -14,4 +14,8 @@ class profile_siswa extends Model
     public function kelas(){
         return $this->belongsTo(Kelas::class);
     }
+
+    public function spp(){
+        return $this->belongsTo(m_spp::class, 'spp_id');
+    }
 }

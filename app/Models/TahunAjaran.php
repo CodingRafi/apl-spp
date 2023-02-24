@@ -56,4 +56,8 @@ class TahunAjaran extends Model
             return redirect($route)->with('msg_success', $message);
         }
     }
+
+    public function spp(){
+        return $this->belongsToMany(Sekolah::class, 'm_spps', 'tahun_ajaran_id', 'sekolah_id')->withPivot('nominal', 'id');
+    }
 }

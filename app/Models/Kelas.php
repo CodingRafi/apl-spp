@@ -24,8 +24,7 @@ class Kelas extends Model
         return $this->belongsTo(ref_tingkat::class, 'ref_tingkat_id');
     }
 
-    public static function getKelas($request){
-        $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
+    public static function getKelas(){
         return DB::table('kelas')
                     ->select('kelas.*', 'ref_tingkats.romawi')
                     ->join('ref_tingkats', 'ref_tingkats.id', 'kelas.ref_tingkat_id')

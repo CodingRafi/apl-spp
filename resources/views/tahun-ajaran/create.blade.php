@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between mb-3 align-items-center">
-    <h1 class="h3"><strong>Tambah Tahun Ajaran</strong></h1>
+    <h4><strong>Tambah Tahun Ajaran</strong></h4>
 </div>
 
 <div class="card">
@@ -33,7 +33,7 @@
                 <input class="form-check-input" type="checkbox" name="status" onclick="isChecked()">
                 <label class="form-label message">Tidak Aktif</label>
             </div>
-            <button type="submit" class="btn text-white" style="background-color: #3bae9c">Simpan</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </form>
     </div>
 </div>

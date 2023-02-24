@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between mb-3 align-items-center">
-    <h1 class="h3"><strong>Roles</strong></h1>
+    <h4><strong>Roles</strong></h4>
     @can('add_roles')
     <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#modalRole">
         Buat Role

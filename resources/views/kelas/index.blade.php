@@ -1,18 +1,18 @@
 @extends('mylayouts.main')
 
 @section('content')
+<div class="d-flex justify-content-between mb-3">
+    <h4><strong>Kelas</strong></h4>
+    @can('add_kelas')
+    @if (count($tahun_ajarans) > 0)
+    <x-ButtonCustom class="btn btn-primary" route="{{ route('kelas.create') }}">
+        Tambah
+    </x-ButtonCustom>
+    @endif
+    @endcan
+</div>
 <div class="card">
     <div class="card-body">
-        <div class="d-flex justify-content-between mb-3">
-            <h4 class="card-title">Kelas</h4>
-            @can('add_kelas')
-            @if (count($tahun_ajarans) > 0)
-            <x-ButtonCustom class="btn btn-primary" route="{{ route('kelas.create') }}">
-                Tambah Kelas
-            </x-ButtonCustom>
-            @endif
-            @endcan
-        </div>
         <table class="table">
             <thead>
                 <tr class="text-center">
@@ -90,7 +90,8 @@
 </div>
 @endsection
 
-@section('tambahjs')
+@push('js')
+    
 <script>
     function open_modal(value_tahun_ajaran = null,  value_kelas = null, value_to_kelas = null, el = null){
         start_loading();
@@ -154,4 +155,4 @@
     })
 </script>
 @endif
-@endsection
+@endpush

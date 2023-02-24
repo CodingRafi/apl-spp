@@ -3,8 +3,9 @@
 @section('content')
 <div class="d-flex justify-content-between mb-3 align-items-center">
     <div class="col-md-7">
-        <h1 class="h3"><strong>Data {{ $role }}</strong></h1>
+        <h4><strong>Data {{ $role }}</strong></h4>
     </div>
+    @if (count($tahun_ajarans) > 0)
     <div class="col-md d-flex justify-content-end gap-2">
         @if (auth()->user()->can('export_users'))
         <x-ButtonCustom class="btn btn-primary" route="/export/users/{{ $role }}">
@@ -22,6 +23,7 @@
         </x-ButtonCustom>
         @endif
     </div>
+    @endif
 </div>
 <div class="card">
     <div class="card-body">
@@ -61,43 +63,43 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{-- @dd($users) --}}
                     @foreach ($users as $user)
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>
-                            {{-- <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
-                                alt="" style="object-fit: cover; border-radius: 50%"> --}}
+                            <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
+                                alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
                         </td>
                         <td>{{ $role != 'siswa' ? ($user->profile_user ? $user->profile_user->name : '') :
                             ($user->profile_siswa ? $user->profile_siswa->name : '') }}</td>
-                        <td>
-                            <form action="{{ route('users.shows', ['role' => $role, 'id' => $user->id]) }}"
-                                method="get">
-                                @include('mypartials.tahunajaran')
-                                <button class="btn btn-sm text-white"
-                                    style="background-color: #3bae9c; width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Show</button>
-                            </form>
-                            @if (auth()->user()->can('edit_users'))
-                            <form action="{{ route('users.edit', ['role' => $role, 'id' => $user->id]) }}" method="get">
-                                @include('mypartials.tahunajaran')
-                                <button class="btn btn-sm btn-warning text-white"
-                                    style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Edit</button>
-                            </form>
-                            @if ($role == 'siswa')
-                            <form action="{{ route('users.down', ['id' => $user->id]) }}" method="post">
-                                @include('mypartials.tahunajaran')
-                                @csrf
-                                <button class="btn btn-sm btn-danger text-white"
-                                    style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;"
-                                    onclick="return confirm('apakah anda yakin?')">Down</button>
-                            </form>
-                            @endif
-                            @endif
-                            @if (auth()->user()->can('delete_users'))
-                            <button type="submit" class="btn btn-sm btn-danger"
-                                onclick="deleteData('{{ route('users.destroy', ['role' => $role, 'id' => $user->id]) }}')"
-                                style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Hapus</button>
-                            @endif
+                        <td class="col-2">
+                            <div class="d-flex flex-wrap gap-2">
+                                <form action="{{ route('users.shows', ['role' => $role, 'id' => $user->id]) }}"
+                                    method="get">
+                                    @include('mypartials.tahunajaran')
+                                    <button class="btn btn-sm btn-primary rounded" style="width: 4rem;">Detail</button>
+                                </form>
+                                @if (auth()->user()->can('edit_users'))
+                                <form action="{{ route('users.edit', ['role' => $role, 'id' => $user->id]) }}"
+                                    method="get">
+                                    @include('mypartials.tahunajaran')
+                                    <button class="btn btn-sm btn-warning rounded" style="width: 4rem;">Edit</button>
+                                </form>
+                                @endif
+                                @if ($role == 'siswa')
+                                <form action="{{ route('users.down', ['id' => $user->id]) }}" method="post">
+                                    @include('mypartials.tahunajaran')
+                                    @csrf
+                                    <button class="btn btn-sm btn-danger rounded" style="width: 4rem;"
+                                        onclick="return confirm('apakah anda yakin?')">Down</button>
+                                </form>
+                                @endif
+                                @if (auth()->user()->can('delete_users'))
+                                <button type="submit" class="btn btn-sm btn-danger rounded" style="width: 4rem;"
+                                    onclick="deleteData('{{ route('users.destroy', ['role' => $role, 'id' => $user->id]) }}')">Hapus</button>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -135,43 +137,39 @@
                     $('.table-user tbody').empty();
                     let no = 1;
                     $.each(response.data, function(i,e){
-                        console.log(e)
                         $('.table-user tbody').append(
                             `
                             <tr>
                                 <th scope="row">${no}</th>
                                 <td>
-                                    {{-- <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
-                                        alt="" style="object-fit: cover; border-radius: 50%"> --}}
+                                    <img src="${e.profil == '/img/profil.png' ? e.profil : '/storage/' + e.profil}"
+                                    alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
                                 </td>
                                 <td>${e.name}</td>
-                                <td>
-                                    <form action="/users/${role}/${e.id}" method="get">
-                                        @include('mypartials.tahunajaran')
-                                        <button class="btn btn-sm text-white"
-                                            style="background-color: #3bae9c; width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Show</button>
-                                    </form>
-                                    @if (auth()->user()->can('edit_users'))
-                                    <form action="/users/${role}/${e.id}/edit" method="get">
-                                        @include('mypartials.tahunajaran')
-                                        <button class="btn btn-sm btn-warning text-white"
-                                            style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Edit</button>
-                                    </form>
-                                    @if ($role == 'siswa')
-                                    <form action="/users/siswa/${e.id}" method="post">
-                                        @include('mypartials.tahunajaran')
-                                        @csrf
-                                        <button class="btn btn-sm btn-danger text-white"
-                                            style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;"
-                                            onclick="return confirm('apakah anda yakin?')">Down</button>
-                                    </form>
-                                    @endif
-                                    @endif
-                                    @if (auth()->user()->can('delete_users'))
-                                    <button type="submit" class="btn btn-sm btn-danger"
-                                        onclick="deleteData('/users/siswa/${e.id}')"
-                                        style="width: 5rem; margin: 0.1rem;border-radius: 5px;font-weight: 500;">Hapus</button>
-                                    @endif
+                                <td class="col-2">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <form action="/users/${role}/${e.id}" method="get">
+                                            @include('mypartials.tahunajaran')
+                                            <button class="btn btn-sm btn-primary rounded" style="width: 4rem;">Detail</button>
+                                        </form>
+                                        @if (auth()->user()->can('edit_users'))
+                                        <form action="/users/${role}/${e.id}/edit" method="get">
+                                            @include('mypartials.tahunajaran')
+                                            <button class="btn btn-sm btn-warning rounded" style="width: 4rem;">Edit</button>
+                                        </form>
+                                        @if ($role == 'siswa')
+                                        <form action="/users/siswa/${e.id}" method="post">
+                                            @include('mypartials.tahunajaran')
+                                            @csrf
+                                            <button class="btn btn-sm btn-danger rounded" style="width: 4rem;"
+                                        onclick="return confirm('apakah anda yakin?')">Down</button>
+                                        </form>
+                                        @endif
+                                        @endif
+                                        @if (auth()->user()->can('delete_users'))
+                                        <button type="submit" class="btn btn-sm btn-danger rounded" style="width: 4rem;" onclick="deleteData('/users/${role}/${e.id}')">Hapus</button>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                             `

@@ -28,6 +28,7 @@ class ProfileSiswaController extends Controller
             'ref_kecamatan_id' => $request->ref_kecamatan_id,
             'ref_kelurahan_id' => $request->ref_kelurahan_id,
             'jalan' => $request->jalan,
+            'spp_id' => $request->spp_id,
         ]);
     }
 

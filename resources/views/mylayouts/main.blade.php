@@ -38,6 +38,13 @@
       border-left: 3px solid transparent;
       text-align: left;
     }
+
+    .sidebar-item.active form button.sidebar-link,
+    .sidebar-item.active form button svg {
+      background: linear-gradient(90deg, rgba(59, 125, 221, 0.1), rgba(59, 125, 221, 0.0875) 50%, transparent);
+      border-left-color: #3b7ddd;
+      color: #e9ecef;
+    }
   </style>
   @stack('css')
 </head>
@@ -62,6 +69,12 @@
       </footer>
     </div>
   </div>
+
+  <form action="" class="form-delete" method="POST">
+    @csrf
+    @method('delete')
+    @stack('other_delete')
+  </form>
 
   <script src="{{ asset('js/app.js') }}"></script>
   @include('mypartials.js')

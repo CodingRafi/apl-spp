@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="d-flex justify-content-between mb-3 align-items-center">
-    <h1 class="h3"><strong>Agama</strong></h1>
+    <h4><strong>Agama</strong></h4>
     @can('add_agama')
     <button type="button" class="btn btn-primary text-white float-right" data-bs-toggle="modal" data-bs-target="#tambah-agama">
-        Tambah Agama
+        Tambah
     </button>
     @endcan
 </div>

@@ -30,4 +30,8 @@ class Sekolah extends Model
     public function tingkat(){
         return $this->belongsToMany(ref_tingkat::class, 'sekolah_tingkat');
     }
+
+    public function spp(){
+        return $this->belongsToMany(TahunAjaran::class, 'm_spps', 'sekolah_id', 'tahun_ajaran_id')->withPivot('nominal', 'id');
+    }
 }

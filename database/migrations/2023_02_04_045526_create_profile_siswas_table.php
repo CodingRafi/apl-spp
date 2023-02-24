@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreignId('ref_kabupaten_id')->nullable()->constrained();
             $table->foreignId('ref_kecamatan_id')->nullable()->constrained();
             $table->foreignId('ref_kelurahan_id')->nullable()->constrained();
+            $table->foreignId('spp_id')->nullable()->constrained('m_spps');
             $table->string('jalan');
             $table->timestamps();
         });

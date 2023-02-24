@@ -4,7 +4,7 @@
     @if (isset($data))
     @method('patch')
     @endif
-    @csrf   
+    @csrf
     @include('mypartials.tahunajaran')
     <div class="mb-3">
         <label for="name" class="form-label">Nama Lengkap</label>
@@ -53,11 +53,12 @@
     </div>
     <div class="mb-3">
         <label for="kelas_id" class="form-label">Kelas</label>
-        <select class="form-select @error('kelas_id') is-invalid @enderror" aria-label="Default select example" name="kelas_id"
-            value="{{ old('kelas_id') }}" style=" font-size: 15px; height: 6.5vh;" id="kelas_id">
+        <select class="form-select @error('kelas_id') is-invalid @enderror" aria-label="Default select example"
+            name="kelas_id" value="{{ old('kelas_id') }}" style=" font-size: 15px; height: 6.5vh;" id="kelas_id">
             <option value="">Pilih Kelas</option>
             @foreach ($kelas as $row)
-            <option value="{{ $row->id }}" {{ isset($data) ? ($data->kelas_id == $row->id ? 'selected' : '') : (old('kelas_id') == $row->id ? 'selected' : '') }}>{{ $row->romawi }} {{ $row->nama }}</option>
+            <option value="{{ $row->id }}" {{ isset($data) ? ($data->kelas_id == $row->id ? 'selected' : '') :
+                (old('kelas_id') == $row->id ? 'selected' : '') }}>{{ $row->romawi }} {{ $row->nama }}</option>
             @endforeach
         </select>
         @error('kelas_id')
@@ -69,11 +70,14 @@
     @if (check_jenjang())
     <div class="mb-3">
         <label for="kompetensi_id" class="form-label">Kompetensi</label>
-        <select class="form-select @error('kompetensi_id') is-invalid @enderror" aria-label="Default select example" name="kompetensi_id"
-            value="{{ old('kompetensi_id') }}" style=" font-size: 15px; height: 6.5vh;" id="kompetensi_id">
+        <select class="form-select @error('kompetensi_id') is-invalid @enderror" aria-label="Default select example"
+            name="kompetensi_id" value="{{ old('kompetensi_id') }}" style=" font-size: 15px; height: 6.5vh;"
+            id="kompetensi_id">
             <option value="">Pilih Kompetensi</option>
             @foreach ($kompetensis as $kompetensi)
-            <option value="{{ $kompetensi->id }}" {{ isset($data) ? ($data->kompetensi_id == $kompetensi->id ? 'selected' : '') : (old('kompetensi_id') == $kompetensi->id ? 'selected' : '') }}>{{ $kompetensi->kompetensi}}</option>
+            <option value="{{ $kompetensi->id }}" {{ isset($data) ? ($data->kompetensi_id == $kompetensi->id ?
+                'selected' : '') : (old('kompetensi_id') == $kompetensi->id ? 'selected' : '') }}>{{
+                $kompetensi->kompetensi}}</option>
             @endforeach
         </select>
         @error('kompetensi_id')
@@ -137,7 +141,8 @@
             value="{{ old('agama_id') }}" style=" font-size: 15px; height: 6.5vh;">
             <option value="">Pilih Agama</option>
             @foreach ($agamas as $agama)
-            <option value="{{ $agama->id }}" {{ isset($data) ? ($data->ref_agama_id == $agama->id ? 'selected' : '') : (old('ref_agama_id') == $agama->id ? 'selected' : '') }}>{{ $agama->nama}}</option>
+            <option value="{{ $agama->id }}" {{ isset($data) ? ($data->ref_agama_id == $agama->id ? 'selected' : '') :
+                (old('ref_agama_id') == $agama->id ? 'selected' : '') }}>{{ $agama->nama}}</option>
             @endforeach
         </select>
         @error('agama_id')
@@ -166,7 +171,8 @@
         <select class="between-input-item-select form-control" name="ref_provinsi_id" id="ref_provinsi_id">
             <option value="">Pilih Provinsi</option>
             @foreach ($provinsis as $provinsi)
-            <option value="{{ $provinsi->id }}" {{ isset($data) ? ($data->ref_provinsi_id == $provinsi->id ? 'selected' : '') : (old('ref_provinsi_id') == $provinsi->id ? 'selected' : '') }}>{{ $provinsi->nama }}</option>
+            <option value="{{ $provinsi->id }}" {{ isset($data) ? ($data->ref_provinsi_id == $provinsi->id ? 'selected'
+                : '') : (old('ref_provinsi_id') == $provinsi->id ? 'selected' : '') }}>{{ $provinsi->nama }}</option>
             @endforeach
         </select>
         @error('ref_provinsi_id')
@@ -222,10 +228,32 @@
     @if (!isset($data))
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="*123456*" style=" font-size: 15px; height: 6.5vh;" id="password" disabled>
+        <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="*123456*"
+            style=" font-size: 15px; height: 6.5vh;" id="password" disabled>
     </div>
     @endif
-    
+
+    @if ($role == 'siswa')
+    @if (isset($data) ? !$data->spp_id : true)
+    <div class="mb-3">
+        <label for="spp_id" class="form-label">SPP</label>
+        <select class="form-select @error('spp_id') is-invalid @enderror" id="spp_id" name="spp_id"
+            value="{{ old('spp_id') }}" style=" font-size: 15px; height: 6.5vh;">
+            <option value="">Pilih SPP</option>
+            @foreach ($spps as $spp)
+            <option value="{{ $spp->id }}" {{ isset($data) ? ($data->spp_id == $spp->id ? 'selected' : '') :
+                (old('spp_id') == $spp->id ? 'selected' : '') }}>{{ $spp->tahun_ajaran->tahun_awal }} - {{ $spp->tahun_ajaran->tahun_akhir }} ({{ $spp->nominal }})</option>
+            @endforeach
+        </select>
+        @error('spp_id')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+    @endif
+    @endif
+
     <div class="mb-3">
         <label for="foto_profil" class="form-label">Foto Profil</label>
         <div class="row">
@@ -234,10 +262,11 @@
             </div>
             @if (isset($data) && $data->profil != '/img/profil.png')
             <div class="col-md-3">
-                <a href="{{ asset('storage/' . $data->profil) }}" class="btn btn-primary" target="_blank">Show Photo Uploaded</a>
+                <a href="{{ asset('storage/' . $data->profil) }}" class="btn btn-primary" target="_blank">Show Photo
+                    Uploaded</a>
             </div>
             @endif
         </div>
     </div>
-    <button type="submit" class="btn text-white mt-3" style="background-color: #3bae9c">Simpan</button>
+    <button type="submit" class="btn btn-primary mt-3">Simpan</button>
 </form>

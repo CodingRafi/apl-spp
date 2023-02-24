@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SppController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KelasController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\RefAgamaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KompetensiController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\RefKabupatenController;
 use App\Http\Controllers\RefKecamatanController;
@@ -51,9 +53,10 @@ Route::group(['middleware' => ['auth']], function() {
         Route::middleware(['auth.sma_smk'])->group(function () {
             Route::resource('kompetensi', KompetensiController::class);
         });
-        Route::resource('kelas', KelasController::class);
         Route::post('kelas/upgrade', [KelasController::class, 'upgrade'])->name('kelas.upgrade');
+        Route::resource('kelas', KelasController::class);
         Route::resource('agama', RefAgamaController::class);
+        Route::resource('spp', SppController::class);
         Route::resource('tahun-ajaran', TahunAjaranController::class);
     });
        
@@ -79,6 +82,17 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     Route::resource('sekolah', App\Http\Controllers\SekolahController::class);
+
+    // Pembayaran SPP
+    Route::prefix('pembayaran')->name('pembayaran.')->group(function () {
+        Route::get('/', [PembayaranController::class, 'index'])->name('index');
+        Route::get('/export/{user_id}', [PembayaranController::class, 'export'])->name('export');
+        Route::get('create/{user_id}', [PembayaranController::class, 'create'])->name('create');
+        Route::get('{user_id}', [PembayaranController::class, 'show'])->name('show');
+        Route::post('{user_id}', [PembayaranController::class, 'store'])->name('store');
+        Route::delete('{pembayaran_id}/{user_id}', [PembayaranController::class, 'destroy'])->name('destroy');
+    });
+
     Route::get('/user-settings', [ConfigurasiUserController::class, 'index']);
     Route::get('/edit-profile', [ConfigurasiUserController::class, 'editProfil']);
     Route::post('/simpan', [ConfigurasiUserController::class, 'saveProfil']);

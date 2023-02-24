@@ -1,19 +1,19 @@
 @extends('mylayouts.main')
 
 @section('content')
+<div class="d-flex justify-content-between mb-2">
+    <h4><strong>Kompetensi</strong></h4>
+    @can('add_kompetensi')
+        @if (count($tahun_ajarans) > 0)  
+        <form action="{{ route('kompetensi.create') }}" method="get">
+            @include('mypartials.tahunajaran')
+            <button class="btn btn-primary">Tambah</button>
+        </form>
+        @endif
+    @endcan
+</div>
 <div class="card">
     <div class="card-body">
-        <div class="d-flex justify-content-between mb-2">
-            <h4 class="card-title">Kompetensi</h4>
-            @can('add_kompetensi')
-                @if (count($tahun_ajarans) > 0)  
-                <form action="{{ route('kompetensi.create') }}" method="get">
-                    @include('mypartials.tahunajaran')
-                    <button class="btn btn-primary">Tambah</button>
-                </form>
-                @endif
-            @endcan
-        </div>
         <div class="table-responsive">
             <table class="table">
                 <thead>

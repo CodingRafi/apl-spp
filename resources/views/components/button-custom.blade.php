@@ -4,6 +4,7 @@
     {{ $slot }}
 </a> --}}
 
+
 <form action="{{ $route }}" method="GET">
     @include('mypartials.tahunajaran')
     <button type="submit" {{ $attributes->merge(['class' => '']) }}>{{ $slot }}</button>

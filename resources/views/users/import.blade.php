@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between mb-3">
-    <h1 class="h3"><strong>Import</strong></h1>
+    <h4><strong>Import</strong></h4>
     <x-ButtonCustom class="btn btn-danger rounded" route="{{ route('users.index', [$role]) }}">
         Kembali
     </x-ButtonCustom>
