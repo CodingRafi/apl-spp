@@ -14,4 +14,8 @@ class ref_kelurahan extends Model
     public function ref_kecamatan(){
         return $this->belongsTo(ref_kecamatan::class);
     }
+
+    public function sekolah(){
+        return $this->hasMany(Sekolah::class);
+    }
 }

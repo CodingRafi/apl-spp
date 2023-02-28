@@ -28,7 +28,7 @@ use App\Http\Controllers\ConfigurasiUserController;
 |
 */
 Route::get('/', function(){
-    return view('landingPage');
+    return redirect()->route('login');
 });
 
 Route::middleware(['guest'])->group(function () {

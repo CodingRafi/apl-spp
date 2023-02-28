@@ -260,6 +260,10 @@ class UserController extends Controller
                 $kelas_request = $user->kelas()->where('tahun_ajaran_id', $tahun_ajaran->id)->first();
     
                 if ($kelas_latest->key == $kelas_request->tingkat->key) {
+                    foreach ($user->pembayaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->get() as $key => $pembayaran) {
+                        $pembayaran->delete();
+                    }
+
                     $kelas_request->pivot->delete();
     
                     return redirect()->back()->with('msg_success', 'Berhasil di downgrade');

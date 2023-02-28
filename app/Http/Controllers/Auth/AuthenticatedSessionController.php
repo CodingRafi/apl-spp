@@ -32,23 +32,16 @@ class AuthenticatedSessionController extends Controller
     public function store(Request $request)
     {   
         $request->validate([
-            'role' => 'required',
             'login' => 'required',
             'password' => 'required'
         ]);
         
-        $user = User::when($request->role == 'super_admin' || $request->role == 'admin', function($q) use($request){
-                    $q->where('email', $request->login);
-                })
-                ->when($request->role == 'siswa', function($q) use($request){
-                    $q->where('nipd', $request->login);
-                })
-                ->when($request->role != 'super_admin' && $request->role != 'admin' && $request->role != 'siswa', function($q) use($request){
-                    $q->where('nip', $request->login);
-                })
-                ->first();
+        $user = User::where('email', $request->login)
+                    ->orWhere('nipd', $request->login)
+                    ->orWhere('nip', $request->login)
+                    ->first();
                 
-        if ($user && $user->hasRole($request->role) && Hash::check($request->password, $user->password)) {
+        if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
             return redirect()->intended(RouteServiceProvider::HOME); 
         } else {

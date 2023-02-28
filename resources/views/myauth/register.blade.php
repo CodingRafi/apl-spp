@@ -227,16 +227,6 @@
                   </div>
                   @enderror
                 </div>
-                <div class="mb-3">
-                  <label for="instagram" class="form-label">Instagram (opsional)</label>
-                  <input type="text" class="form-control" placeholder="https://instagram.com"
-                    name="instagram" style="border-radius: 5px; width: 100%">
-                </div>
-                <div class="mb-3">
-                  <label for="youtube" class="form-label">Youtube (opsional)</label>
-                  <input type="text" class="form-control" placeholder="https://youtube.com"
-                    name="youtube" style="border-radius: 5px; width: 100%">
-                </div>
               </div>
 
               <div class="tab" id="admin" style="display: none;">

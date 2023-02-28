@@ -1,86 +1,68 @@
 @extends('mylayouts.main')
 
 @push('css')
-    <style>
-        .title{
-            font-weight: 500;
-        }
-    </style>
+<style>
+    .title {
+        font-weight: 500;
+    }
+</style>
 @endpush
 
 @section('content')
+<div class="d-flex justify-content-between mb-3 align-items-center">
+    <h4><strong>Dashboard</strong></h4>
+</div>
 @if (Auth::user()->hasRole('super_admin'))
 <div class="card">
     <div class="card-body">
-        
+
     </div>
 </div>
 @else
-    <div class="card mb-3" style="min-height: 17rem;overflow: auto;">
-        <div class="card-body">
-            <div class="title" style="display: flex; justify-content: space-between">
-                <h4 class="card-title">Profile Sekolah</h4>
-                @if (auth()->user()->can('edit_sekolah'))
-                <form action="{{ route('sekolah.edit.own') }}" method="get">
-                    @include('mypartials.tahunajaran')
-                    <button class="btn btn-warning btn-sm text-white"
-                        style="min-width: 5vw;font-weight: 500;border-radius: 5px;">Edit</button>
-                </form>
-                @endif
+<div class="card mb-3" style="min-height: 17rem;overflow: auto;">
+    <div class="card-body">
+        <div class="title" style="display: flex; justify-content: space-between">
+            <h4 class="card-title">Profile Sekolah</h4>
+            @if (auth()->user()->can('edit_sekolah'))
+            <x-ButtonCustom class="btn btn-warning btn-sm rounded" route="{{ route('sekolah.edit.own') }}">
+                Edit
+            </x-ButtonCustom>
+            @endif
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <table class="table table-responsive table-borderless">
+                    <tr>
+                        <td class="title">Nama Sekolah</td>
+                        <td>:</td>
+                        <td>{{ Auth::user()->sekolah->nama }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">NPSN</td>
+                        <td>:</td>
+                        <td>{{ Auth::user()->sekolah->npsn }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Kepala Sekolah</td>
+                        <td>:</td>
+                        <td>{{ Auth::user()->sekolah->kepala_sekolah }}</td>
+                    </tr>
+                    <tr>
+                        <td class="title">Alamat</td>
+                        <td>:</td>
+                        <td>{{ Auth::user()->sekolah->jalan }},{{ Auth::user()->sekolah->kelurahan->nama }},{{
+                            Auth::user()->sekolah->kecamatan->nama }}, {{ Auth::user()->sekolah->kabupaten->nama }}, {{
+                            Auth::user()->sekolah->provinsi->nama }}</td>
+                    </tr>
+                </table>
             </div>
-            <div class="row">
-                <div class="col-lg-9">
-                    <table class="table table-responsive table-borderless">
-                        <tr>
-                            <td class="title">Nama Sekolah</td>
-                            <td>:</td>
-                            <td>{{ Auth::user()->sekolah->nama }}</td>
-                        </tr>
-                        <tr>
-                            <td class="title">NPSN</td>
-                            <td>:</td>
-                            <td>{{ Auth::user()->sekolah->npsn }}</td>
-                        </tr>
-                        <tr>
-                            <td class="title">Kepala Sekolah</td>
-                            <td>:</td>
-                            <td>{{ Auth::user()->sekolah->kepala_sekolah }}</td>
-                        </tr>
-                        <tr>
-                            <td class="title">Alamat</td>
-                            <td>:</td>
-                            <td>{{ Auth::user()->sekolah->alamat }}</td>
-                        </tr>
-                        <tr>
-                            <td class="d-flex gap-3">
-                                @if ( Auth::user()->sekolah->instagram )
-                                <a href="{{ Auth::user()->sekolah->instagram }}"><i class="bi bi-instagram"
-                                        style="color: purple;"></i></a>
-                                @endif
-                                @if ( Auth::user()->sekolah->youtube )
-                                <a href="{{ Auth::user()->sekolah->youtube }}"><i class="bi bi-youtube"
-                                        style="color: red"></i></a>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @if ( Auth::user()->sekolah->youtube )
-                                <a href="{{ Auth::user()->sekolah->youtube }}"><i class="bi bi-youtube"
-                                        style="color: red"></i></a>
-                                @endif
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-lg-3">
-                    <img src="{{ Auth::user()->sekolah->logo != '/img/tutwuri.png' ? asset('storage/' . Auth::user()->sekolah->logo) : Auth::user()->sekolah->logo }}"
-                        alt="" scale="1/1"
-                        style="width: 10rem; object-fit: cover; border-radius: 5px; display: block;">
-                </div>
+            <div class="col-lg-3">
+                <img src="{{ Auth::user()->sekolah->logo != '/img/tutwuri.png' ? asset('storage/' . Auth::user()->sekolah->logo) : Auth::user()->sekolah->logo }}"
+                    alt="" scale="1/1" style="width: 10rem; object-fit: cover; border-radius: 5px; display: block;">
             </div>
         </div>
     </div>
+</div>
 @if (auth()->user()->can('view_users') || auth()->user()->can('view_kompetensi'))
 <div class="container-fluid p-0">
     <div class="row">

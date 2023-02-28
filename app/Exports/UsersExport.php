@@ -19,7 +19,7 @@ class UsersExport implements FromView
 
     public function view(): View
     {   
-        $users = User::getUser($this->request, $this->role, true);
+        $users = User::getUser($this->request, $this->role, true, false, ['search' => $this->request->search, 'kelas' => $this->request->kelas, 'kompetensi' => $this->request->kompetensi]);
 
         return view('users.export', [
             'users' => $users,

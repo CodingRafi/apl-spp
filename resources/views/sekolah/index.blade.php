@@ -16,8 +16,6 @@
                         <th scope="col">Kepala Sekolah</th>
                         <th scope="col">Tingkat</th>
                         <th scope="col">Alamat</th>
-                        <th scope="col">Instagram</th>
-                        <th scope="col">Youtube</th>
                         @if (auth()->user()->can('edit_sekolah') || auth()->user()->can('delete_sekolah'))
                         <th scope="col">Action</th>
                         @endif
@@ -39,8 +37,6 @@
                         <td>{{ $sekolah->kepala_sekolah }}</td>
                         <td style="text-transform: uppercase;s">{{ $sekolah->jenjang }}</td>
                         <td>{{ $sekolah->alamat }}</td>
-                        <td>{{ $sekolah->instagram }}</td>
-                        <td>{{ $sekolah->youtube }}</td>
                         @if (auth()->user()->can('edit_sekolah') || auth()->user()->can('delete_sekolah')) 
                         <td>
                             @if (auth()->user()->can('delete_sekolah'))

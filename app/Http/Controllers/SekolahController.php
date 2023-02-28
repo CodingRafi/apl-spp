@@ -91,20 +91,14 @@ class SekolahController extends Controller
             'alamat' => $request->alamat,
         ];
 
-        if ($request->instagram) {
-            $data += ['instagram' => $request->instagram];
-        }
-        
-        if ($request->youtube) {
-            $data += ['youtube' => $request->youtube];
-        }
-
         if ($request->logo) {
             if ($sekolah->logo != '/img/tutwuri.png	') {
                 Storage::delete($sekolah->logo);
             }
             $data += ['logo' => $request->file('logo')->store('logo')];
         }
+
+        dd($data);
 
         $sekolah->update($data);
 

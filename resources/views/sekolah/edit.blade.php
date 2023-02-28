@@ -45,21 +45,6 @@
                 </div>
                 @enderror
             </div>
-            {{-- <div class="mb-3">
-                <label for="tingkat_id" class="form-label">Tingkat/Kelas</label>
-                <select name="tingkat_id[]" id="tingkat_id"
-                    class="fstdropdown-select text-dark form-control @error('tingkat_id') is-invalid @enderror"
-                    style="border-radius: 5px;" required multiple>
-                    @foreach ($tingkats as $tingkat)
-                    <option value="{{ $tingkat->id }}" {{ isset($data) ? (in_array($tingkat->id, $data->tingkat) ? 'selected' : '') : (in_array($tingkat->id, old('tingkat_id')) ? 'selected' : '')}}>{{ $tingkat->romawi }}</option>
-                    @endforeach
-                </select>
-                @error('tingkat_id')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div> --}}
             <div class="mb-3">
                 <label for="ref_provinsi_id" class="form-label">Provinsi</label>
                 <select class="between-input-item-select form-control" name="ref_provinsi_id" id="ref_provinsi_id">
@@ -120,18 +105,7 @@
                 </div>
                 @enderror
             </div>
-            <div class="mb-3">
-                <label for="instagram">Instagram (opsional)</label>
-                <input class="form-control form-control-sm" type="text" placeholder="https://instagram.com"
-                    value="{{ $data->instagram, old('instagram') }}" name="instagram" id="instagram"
-                    style=" font-size: 15px;">
-            </div>
-            <div class="mb-3">
-                <label for="youtube">Youtube (opsional)</label>
-                <input class="form-control form-control-sm" type="text" placeholder="https://youtube.com"
-                    value="{{ $data->youtube, old('youtube') }}" name="youtube" id="youtube" style=" font-size: 15px;">
-            </div>
-            <button class="btn text-white" type="submit" style="background-color: #3bae9c">Update</button>
+            <button class="btn btn-primary" type="submit">Update</button>
         </form>
     </div>
 </div>

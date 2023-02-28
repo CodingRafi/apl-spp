@@ -8,7 +8,7 @@
     @if (count($tahun_ajarans) > 0)
     <div class="col-md d-flex justify-content-end gap-2">
         @if (auth()->user()->can('export_users'))
-        <x-ButtonCustom class="btn btn-primary" route="/export/users/{{ $role }}">
+        <x-ButtonCustom class="btn btn-primary btn-export" route="/export/users/{{ $role }}">
             Export
         </x-ButtonCustom>
         @endif
@@ -113,75 +113,91 @@
 
 @push('js')
 <script>
+    const search = $('.container-filter input[name="search"]');
+    const kompetensi = $('.container-filter .filter-kompetensi');
+    const kelas = $('.container-filter .filter-kelas');
+
     function filter_user(){
-            let role = '{{ request("role") }}';
-            let form = new FormData();
-            form.set('search', $('.container-filter input[name="search"]').val());
-            form.set('kompetensi', $('.container-filter .filter-kompetensi') ? $('.container-filter .filter-kompetensi').val() : '');
-            form.set('kelas', $('.container-filter .filter-kelas').val());
+        let role = '{{ request("role") }}';
+        let form = new FormData();
+        form.set('search', search.val());
+        form.set('kompetensi', kompetensi ? kompetensi.val() : '');
+        form.set('kelas', kelas.val());
+        form.set('tahun_awal', "{{ request('tahun_awal') }}");
+        form.set('tahun_akhir', "{{ request('tahun_akhir') }}");
 
-            $.ajax({
-                type: "POST",
-                url: "{{ route('users.list', request('role')) }}",
-                data: form,
-                dataType: "json",
-                processData: false,
-                contentType: false,
-                beforeSend: function (e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function (response) {
-                    console.log(response)
-                    $('.table-user tbody').empty();
-                    let no = 1;
-                    $.each(response.data, function(i,e){
-                        $('.table-user tbody').append(
-                            `
-                            <tr>
-                                <th scope="row">${no}</th>
-                                <td>
-                                    <img src="${e.profil == '/img/profil.png' ? e.profil : '/storage/' + e.profil}"
-                                    alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
-                                </td>
-                                <td>${e.name}</td>
-                                <td class="col-2">
-                                    <div class="d-flex flex-wrap gap-2">
-                                        <form action="/users/${role}/${e.id}" method="get">
-                                            @include('mypartials.tahunajaran')
-                                            <button class="btn btn-sm btn-primary rounded" style="width: 4rem;">Detail</button>
-                                        </form>
-                                        @if (auth()->user()->can('edit_users'))
-                                        <form action="/users/${role}/${e.id}/edit" method="get">
-                                            @include('mypartials.tahunajaran')
-                                            <button class="btn btn-sm btn-warning rounded" style="width: 4rem;">Edit</button>
-                                        </form>
-                                        @if ($role == 'siswa')
-                                        <form action="/users/siswa/${e.id}" method="post">
-                                            @include('mypartials.tahunajaran')
-                                            @csrf
-                                            <button class="btn btn-sm btn-danger rounded" style="width: 4rem;"
-                                        onclick="return confirm('apakah anda yakin?')">Down</button>
-                                        </form>
-                                        @endif
-                                        @endif
-                                        @if (auth()->user()->can('delete_users'))
-                                        <button type="submit" class="btn btn-sm btn-danger rounded" style="width: 4rem;" onclick="deleteData('/users/${role}/${e.id}')">Hapus</button>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-                            `
-                        );
+        $.ajax({
+            type: "POST",
+            url: "{{ route('users.list', request('role')) }}",
+            data: form,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            beforeSend: function (e) {
+                if (e && e.overrideMimeType) {
+                    e.overrideMimeType("application/json;charset=UTF-8");
+                }
+            },
+            success: function (response) {
+                $('.table-user tbody').empty();
+                let no = 1;
+                $.each(response.data, function(i,e){
+                    $('.table-user tbody').append(
+                        `
+                        <tr>
+                            <th scope="row">${no}</th>
+                            <td>
+                                <img src="${e.profil == '/img/profil.png' ? e.profil : '/storage/' + e.profil}"
+                                alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
+                            </td>
+                            <td>${e.name}</td>
+                            <td class="col-2">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <form action="/users/${role}/${e.id}" method="get">
+                                        @include('mypartials.tahunajaran')
+                                        <button class="btn btn-sm btn-primary rounded" style="width: 4rem;">Detail</button>
+                                    </form>
+                                    @if (auth()->user()->can('edit_users'))
+                                    <form action="/users/${role}/${e.id}/edit" method="get">
+                                        @include('mypartials.tahunajaran')
+                                        <button class="btn btn-sm btn-warning rounded" style="width: 4rem;">Edit</button>
+                                    </form>
+                                    @if ($role == 'siswa')
+                                    <form action="/users/siswa/${e.id}/down" method="post">
+                                        @include('mypartials.tahunajaran')
+                                        @csrf
+                                        <button class="btn btn-sm btn-danger rounded" style="width: 4rem;"
+                                    onclick="return confirm('apakah anda yakin?')">Down</button>
+                                    </form>
+                                    @endif
+                                    @endif
+                                    @if (auth()->user()->can('delete_users'))
+                                    <button type="submit" class="btn btn-sm btn-danger rounded" style="width: 4rem;" onclick="deleteData('/users/${role}/${e.id}')">Hapus</button>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                        `
+                    );
 
-                        no++;
-                    })
-                },
-                error: function (response) {
-                    console.log(response)
-                },
-            });
-        }
+                    no++;
+                })
+            },
+            error: function (response) {
+                console.log(response)
+            },
+        });
+    }
+
+    $('.btn-export').attr('type', 'button').on('click', function(e){
+        e.preventDefault();
+        $(`
+            <input type="hidden" name="search" value="${search.val()}">
+            <input type="hidden" name="kelas" value="${kelas.val()}">
+            <input type="hidden" name="kompetensi" value="${kompetensi ? kompetensi.val() : ''}">
+        `).insertBefore(this)
+
+        $(this).parent().submit();
+    })  
 </script>
 @endpush

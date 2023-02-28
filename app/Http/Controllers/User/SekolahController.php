@@ -41,8 +41,6 @@ class SekolahController extends Controller
             'ref_kelurahan_id' => $request->ref_kelurahan_id,
             'jalan' => $request->jalan,
             'jenjang' => $request->jenjang,
-            'instagram' => $request->instagram,
-            'youtube' => $request->youtube,
         ]);
 
         $sekolah->tingkat()->sync($request->tingkat_id);
@@ -85,8 +83,6 @@ class SekolahController extends Controller
             'ref_kelurahan_id' => 'required',
             'jalan' => 'required',
             'logo' => 'mimes:jpg,jpeg,png|file|max:5024',
-            'instagram' => 'nullable',
-            'youtube' => 'nullable',
             'kepala_sekolah' => 'nullable',
         ]);
 

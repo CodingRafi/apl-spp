@@ -27,7 +27,7 @@ class t_pembayaran extends Model
 
         foreach (config('services.bulan') as $key => $bulan) {
             $pembayaran = $user->pembayaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->where('bulan', $key+1)->first();
-          
+            
             $response[] = [   
                 'id' => $pembayaran ? $pembayaran->id : '',
                 'bulan' => $bulan,

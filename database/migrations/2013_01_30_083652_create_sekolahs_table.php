@@ -25,8 +25,6 @@ return new class extends Migration
             $table->foreignId('ref_kelurahan_id')->constrained();
             $table->text('jalan');
             $table->enum('jenjang', ['sd', 'smp', 'smk', 'sma']);
-            $table->string('instagram')->nullable();
-            $table->string('youtube')->nullable();
             $table->timestamps();
         });
     }

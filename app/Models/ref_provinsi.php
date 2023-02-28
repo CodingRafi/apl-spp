@@ -14,4 +14,8 @@ class ref_provinsi extends Model
     public function ref_kabupaten(){
         return $this->hasMany(ref_kabupaten::class);
     }
+
+    public function sekolah(){
+        return $this->hasMany(Sekolah::class);
+    }
 }

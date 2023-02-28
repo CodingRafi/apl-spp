@@ -128,7 +128,6 @@ class User extends Authenticatable
             $users = $users->get();
         }
                 
-        // dd($users);
         return $users;
     }
 
