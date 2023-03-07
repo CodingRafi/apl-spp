@@ -70,6 +70,10 @@ class PembayaranController extends Controller
             'bulan' => 'required'
         ]);
 
+        if (!$request->nominal) {
+            return redirect()->back()->with('msg_error', 'Tidak ada nominal');
+        }
+
         $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
 
         t_pembayaran::create([

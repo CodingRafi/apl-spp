@@ -24,6 +24,13 @@
                             <td class="col-1">:</td>
                             <td class="col-8">{{ $user->email }}</td>
                         </tr>
+                        @if ($role != 'siswa' || $role != 'admin' || $role != 'super_admin')
+                        <tr class="row">
+                            <td class="col-3" style="font-weight: 600;">NIP</td>
+                            <td class="col-1">:</td>
+                            <td class="col-8">{{ $user->nip }}</td>
+                        </tr>
+                        @endif
                         <tr class="row">
                             <td class="col-3" style="font-weight: 600;">Jenis Kelamin</td>
                             <td class="col-1">:</td>
@@ -94,7 +101,9 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <img class="" src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}" alt="profil" style="max-height: 15rem;width: 100%">
+                <img class=""
+                    src="{{ $user->profil == '/img/profil.png' ? asset($user->profil) : asset('storage/' . $user->profil) }}"
+                    alt="profil" style="max-height: 15rem;width: 100%;object-fit: contain">
             </div>
         </div>
     </div>

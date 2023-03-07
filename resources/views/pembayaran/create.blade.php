@@ -21,7 +21,7 @@
       <div class="mb-3">
         <label for="nominal" class="form-label">Nominal</label>
         <input type="number" class="form-control @error('nominal') is-invalid @enderror" name="nominal"
-          value="{{ $user->nominal }}" id="nominal" disabled>
+          value="{{ $user->nominal }}" id="nominal" readonly>
       </div>
       <div class="mb-3">
         <label for="bulan" class="form-label">Bulan</label>

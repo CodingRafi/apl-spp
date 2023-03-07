@@ -134,6 +134,12 @@ class SppController extends Controller
     public function destroy($id)
     {
         $data = m_spp::findOrFail($id);
-        dd($data);
+        foreach ($data->user as $key => $user) {
+            $user->update([
+                'spp_id' => null
+            ]);
+        }
+        $data->delete();
+        return redirect()->back()->with('msg_success', 'Berhasil dihapus');
     }
 }

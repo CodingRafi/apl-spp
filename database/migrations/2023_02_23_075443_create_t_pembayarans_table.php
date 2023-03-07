@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('t_pembayarans', function (Blueprint $table) {
             $table->id();
             $table->string('bulan');
-            $table->foreignId('petugas_id')->constrined('users');
+            $table->foreignId('petugas_id')->nullable()->constrined('users');
             $table->foreignId('siswa_id')->constrained('users');
             $table->foreignId('tahun_ajaran_id')->constrained();
             $table->timestamps();

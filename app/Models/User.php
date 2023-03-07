@@ -40,11 +40,11 @@ class User extends Authenticatable
     }
 
     public function profile_user(){
-        return $this->hasOne(profile_user::class);
+        return $this->hasOne(profile_user::class, 'user_id');
     }
 
     public function profile_siswa(){
-        return $this->hasOne(profile_siswa::class);
+        return $this->hasOne(profile_siswa::class, 'user_id');
     }
 
     private static function parseDataToArray($datas){
@@ -166,8 +166,11 @@ class User extends Authenticatable
 
     public static function deleteUser($role, $id){
         $user = User::findOrFail($id);
-        
         if ($role == 'siswa') {
+            foreach ($user->pembayaran as $key => $pembayaran) {
+                $pembayaran->delete();
+            }
+
             foreach ($user->kelas as $key => $kelas) {
                 $kelas->users()->detach($user->id);
             }
@@ -176,6 +179,12 @@ class User extends Authenticatable
                 $user->profile_siswa->delete();
             }
         } else {
+            foreach ($user->petugas as $key => $pembayaran) {
+                $pembayaran->update([
+                    'petugas_id' => null
+                ]);
+            }
+
             $user->profile_user->delete();
         }
 

@@ -46,12 +46,13 @@
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>
-                            {{-- <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
-                                alt="" style="object-fit: cover; border-radius: 50%"> --}}
+                            <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
+                                alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
                         </td>
                         <td>{{ $user->profile_siswa ? $user->profile_siswa->name : '' }}</td>
                         <td>
-                            <x-ButtonCustom class="btn btn-sm btn-primary rounded" route="{{ route('pembayaran.show', ['user_id' => $user->id]) }}">
+                            <x-ButtonCustom class="btn btn-sm btn-primary rounded"
+                                route="{{ route('pembayaran.show', ['user_id' => $user->id]) }}">
                                 Detail
                             </x-ButtonCustom>
                         </td>
@@ -95,8 +96,8 @@
                             <tr>
                                 <th scope="row">${no}</th>
                                 <td>
-                                    {{-- <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
-                                        alt="" style="object-fit: cover; border-radius: 50%"> --}}
+                                    <img src="${e.profil == '/img/profil.png' ? e.profil : '/storage/' + e.profil}"
+                                alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
                                 </td>
                                 <td>${e.name}</td>
                                 <td>

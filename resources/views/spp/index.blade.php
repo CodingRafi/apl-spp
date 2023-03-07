@@ -33,7 +33,7 @@
                     <td>{{ $spp->pivot->nominal }}</td>
                     <td>
                         <a href="{{ route('spp.edit', $spp->pivot->id) }}" class="btn btn-sm btn-warning rounded">Edit</a>
-                        <button type="button" class="btn btn-sm btn-danger rounded" onclick="deleteData({{ route('spp.destroy', $spp->pivot->id) }})">Hapus</button>
+                        <button type="button" class="btn btn-sm btn-danger rounded" onclick="deleteData('{{ route('spp.destroy', $spp->pivot->id) }}')">Hapus</button>
                     </td>
                 </tr>
                 @endforeach

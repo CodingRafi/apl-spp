@@ -125,9 +125,8 @@ class SekolahController extends Controller
             $kompetensi->delete();
         }
 
-        foreach ($sekolah->tingkat as $key => $tingkat) {
-            $sekolah->tingkat()->sync([]);
-        }
+        $sekolah->tingkat()->sync([]);
+        $sekolah->spp()->sync([]);
 
         $sekolah->delete();
 

@@ -33,65 +33,6 @@ class DashboardController extends Controller
             $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
             $return = [];
 
-            if (auth()->user()->can('view_users')) {
-                //! Data User 
-                $users = [
-                    'key' => [],
-                    'data' => []
-                ];
-    
-                $roles = Role::select('roles.name')
-                                ->where('roles.name', '!=', 'super_admin')
-                                ->where('roles.name', '!=', 'admin')
-                                ->get();
-    
-                foreach ($roles as $key => $role) {
-                    $count = User::role($role->name)
-                    ->where('sekolah_id', Auth::user()->sekolah_id)
-                    ->when($role == 'siswa', function($q) use($tahun_ajaran, $role) {
-                        $q->join('profile_siswas', 'profile_siswas.user_id', 'users.id')
-                            ->where('profile_siswas.tahun_ajaran_id', $tahun_ajaran->id);
-                    })
-                    ->count();
-    
-                    array_push($users['key'], ucfirst($role->name));
-                    array_push($users['data'], $count);
-                }
-
-                $return += [
-                    'users' => $users,
-                ];
-            }
-
-            if (auth()->user()->can('view_kompetensi')) {
-                //! Kompetensi
-                $kompetensis = $this->parseData(DB::table('kompetensis')
-                                ->select(DB::raw('count(profile_siswas.id) as jml'), 'kompetensis.kompetensi as key')
-                                ->join('profile_siswas', 'profile_siswas.kompetensi_id', 'kompetensis.id')
-                                ->join('users', 'users.id', 'profile_siswas.user_id')
-                                ->where('users.sekolah_id', Auth::user()->sekolah_id)
-                                ->groupBy('kompetensis.id')
-                                ->get()->toArray());
-
-                $return += ['kompetensis' => $kompetensis];
-            }
-
-            if (auth()->user()->can('view_kelas')) {
-                //! Kelas
-                // $kelas = $this->parseData(DB::table('kelas')
-                //         ->select(DB::raw('count(profile_siswas.id) as jml'), 'kelas.nama as key')
-                //         ->join('profile_siswas', 'profile_siswas.kelas_id', 'kelas.id')
-                //         ->join('users', 'users.id', 'profile_siswas.user_id')
-                //         ->where('users.sekolah_id', Auth::user()->sekolah_id)
-                //         ->groupBy('kelas.id')
-                //         ->get()->toArray());
-                $kelas = [
-                    'key' => [],
-                    'data' => []
-                ];
-
-                $return += ['kelas' => $kelas];
-            }
 
             return view('dashboard', $return);
         }

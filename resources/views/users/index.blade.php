@@ -68,7 +68,7 @@
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
                         <td>
-                            <img src="{{ $user->profil == '/img/profil.png' ? $user->profil : asset('storage/' . $user->profil) }}"
+                            <img src="{{ $user->profil == '/img/profil.png' ? asset($user->profil) : asset('storage/' . $user->profil) }}"
                                 alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
                         </td>
                         <td>{{ $role != 'siswa' ? ($user->profile_user ? $user->profile_user->name : '') :

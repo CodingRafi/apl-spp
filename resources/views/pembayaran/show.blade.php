@@ -5,7 +5,7 @@
     <div class="col-md-7">
         <h4><strong>Detail Pembayaran</strong></h4>
     </div>
-    <div class="d-flex justify-content-end gap-2">
+    <div class="d-flex justify-content-end gap-2">  
         @can('add_pembayaran')
         <x-ButtonCustom class="btn btn-primary" route="{{ route('pembayaran.create', ['user_id' => request('user_id')]) }}">
             Tambah

@@ -29,8 +29,8 @@ class UserSeeder extends Seeder
                 'name_long' => 'Admin',
                 'permission' => ['1', '2', '3', '4', '5', '6', '16', '18', '19', '20', '21', '22', '23', '24', '25', '30', '31', '32', '33', '34', '35', '36', '37', '38']
             ],
-            'karyawan' => [
-                'name_long' => 'Karyawan',
+            'petugas' => [
+                'name_long' => 'Petugas',
                 'permission' => []
             ],
             'siswa' => [

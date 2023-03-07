@@ -93,11 +93,14 @@ Route::group(['middleware' => ['auth']], function() {
         Route::delete('{pembayaran_id}/{user_id}', [PembayaranController::class, 'destroy'])->name('destroy');
     });
 
-    Route::get('/user-settings', [ConfigurasiUserController::class, 'index']);
-    Route::get('/edit-profile', [ConfigurasiUserController::class, 'editProfil']);
-    Route::post('/simpan', [ConfigurasiUserController::class, 'saveProfil']);
-    Route::get('/ubah-password', [ConfigurasiUserController::class, 'ubahPassword']);
-    Route::get('/reset', [ConfigurasiUserController::class, 'reset_password']);
+     // Profil
+    Route::prefix('profil')->name('profil.')->group(function () {
+         Route::get('/', [ConfigurasiUserController::class, 'index'])->name('index');
+         Route::patch('/update', [ConfigurasiUserController::class, 'update'])->name('update');
+         Route::get('/ubah-password', [ConfigurasiUserController::class, 'ubahPassword'])->name('ubah-password');
+         Route::patch('/reset-password', [ConfigurasiUserController::class, 'reset_password'])->name('reset-password');
+    });
+
 });
 
 require __DIR__.'/auth.php';
