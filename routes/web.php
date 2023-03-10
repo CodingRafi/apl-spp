@@ -28,8 +28,8 @@ use App\Http\Controllers\ConfigurasiUserController;
 |
 */
 Route::get('/', function(){
-    return redirect()->route('login');
-});
+    return view('welcome');
+})->name('index');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/register',[App\Http\Controllers\User\SekolahController::class, 'create'])->name('register');

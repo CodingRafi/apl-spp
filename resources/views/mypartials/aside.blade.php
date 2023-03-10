@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
   <div class="sidebar-content js-simplebar">
     <a class="sidebar-brand" href="{{ route('dashboard') }}">
-      <span class="align-middle">SPP</span>
+      <span class="align-middle">Schoolio</span>
     </a>
 
     <ul class="sidebar-nav">
@@ -11,13 +11,13 @@
         </x-ButtonCustom>
       </li>
 
-      @can('view_sekolah')
+      {{-- @can('view_sekolah')
       <li class="sidebar-item {{ Request::is('sekolah*') ? 'active' : '' }}">
         <a class="sidebar-link" href="{{ route('sekolah.index') }}">
           <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Sekolah</span>
         </a>
       </li>
-      @endcan
+      @endcan --}}
 
       @can('view_pembayaran')
       <li class="sidebar-item {{ Request::is('pembayaran*') ? 'active' : '' }}">

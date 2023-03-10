@@ -2,9 +2,9 @@
 
 @push('css')
 <style>
-.card-login{
-  border-radius: 13px;
-}
+  .card-login {
+    border-radius: 13px;
+  }
 </style>
 @endpush
 
@@ -19,7 +19,8 @@
             <h2 class="text-center mb-3" style="color: #263238;">Sign In</h2>
             <div class="mb-3 login">
               <label for="login" class="form-label">Email/NIP/NIPD</label>
-              <input type="text" class="form-control w-100" id="login" name="login" placeholder="Masukkan Email/NIP/NIPD">
+              <input type="text" class="form-control w-100" id="login" name="login"
+                placeholder="Masukkan Email/NIP/NIPD">
             </div>
             <div class="mb-3 password">
               <label class="form-label" for="password">Password</label>
@@ -36,8 +37,8 @@
                     </div>
                   </div>
                   <div class="col-6 d-flex justify-content-end align-items-center">
-                    <a href="forgot-password"
-                      style="font-size: 12.5px;font-weight: 700;" class="text-decoration-none">Lupa
+                    <a href="forgot-password" style="font-size: 12.5px;font-weight: 700;"
+                      class="text-decoration-none">Lupa
                       Password?</a>
                   </div>
                 </div>
@@ -49,6 +50,9 @@
               </div>
             </div>
           </form>
+          <a href="{{ route('index') }}" class="d-flex justify-content-center mt-3"><i
+              class="bi bi-arrow-left-circle mr-2"></i>
+            Back to Home</a>
         </div>
       </div>
     </div>

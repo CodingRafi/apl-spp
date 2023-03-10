@@ -9,7 +9,7 @@
 
   <link rel="stylesheet" href="{{ asset('css/fstdropdown.css') }}">
 
-  <title>SPP</title>
+  <title>Schoolio</title>
 
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">

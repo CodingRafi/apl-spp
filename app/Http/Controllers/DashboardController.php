@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth, DB;
 use App\Models\User;
 use App\Models\Sekolah;
+use App\Models\ref_agama;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -13,26 +14,19 @@ class DashboardController extends Controller
 {
     public function index(Request $request){ 
         if (\Auth::user()->hasRole('super_admin')) {
-            $roles = Role::all();
-            $sekolah = Sekolah::all();
-            $tahun_ajarans = TahunAjaran::all();
-            $countRole = Role::all()->count() - 1;
-            $countSekolah = Sekolah::all()->count();
-            $countTahunAjaran = TahunAjaran::all()->count();
+            $countRole = Role::count() - 1;
+            $countAgama = ref_agama::count();
+            $countTahunAjaran = TahunAjaran::count();
 
             return view('dashboard', [
-                'roles' => $roles,
-                'sekolah' => $sekolah,
-                'tahun_ajarans' => $tahun_ajarans,
                 'countRole' => $countRole,
-                'countSekolah' => $countSekolah,
+                'countAgama' => $countAgama,
                 'countTahunAjaran' => $countTahunAjaran
             ]);
 
         }else {
             $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
             $return = [];
-
 
             return view('dashboard', $return);
         }

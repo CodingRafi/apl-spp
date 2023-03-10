@@ -13,9 +13,30 @@
     <h4><strong>Dashboard</strong></h4>
 </div>
 @if (Auth::user()->hasRole('super_admin'))
-<div class="card">
-    <div class="card-body">
-
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Jumlah Tahun Ajaran</h5>
+                <p class="card-text" style="font-size: 2rem">{{ $countTahunAjaran }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Jumlah Agama</h5>
+                <p class="card-text" style="font-size: 2rem">{{ $countAgama }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Jumlah Role</h5>
+                <p class="card-text" style="font-size: 2rem">{{ $countRole }}</p>
+            </div>
+        </div>
     </div>
 </div>
 @else
