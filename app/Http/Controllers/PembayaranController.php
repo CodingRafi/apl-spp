@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PembayaranExportAll;
+use App\Exports\PembayaranExport;
 use Illuminate\Validation\ValidationException;
 
 class PembayaranController extends Controller
@@ -25,7 +27,7 @@ class PembayaranController extends Controller
          $this->middleware('permission:view_pembayaran', ['only' => ['index','show']]);
          $this->middleware('permission:add_pembayaran', ['only' => ['create','store']]);
          $this->middleware('permission:delete_pembayaran', ['only' => ['destroy']]);
-        //  $this->middleware('permission:export_pembayaran', ['only' => ['export']]);
+         $this->middleware('permission:export_pembayaran', ['only' => ['export']]);
     }
     
     public function index(Request $request)
@@ -76,12 +78,14 @@ class PembayaranController extends Controller
 
         $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
 
-        t_pembayaran::create([
-            'tahun_ajaran_id' => $tahun_ajaran->id,
-            'siswa_id' => $id,
-            'bulan' => $request->bulan,
-            'petugas_id' => Auth::user()->id
-        ]);
+        foreach ($request->bulan as $key => $bulan) {
+            t_pembayaran::create([
+                'tahun_ajaran_id' => $tahun_ajaran->id,
+                'siswa_id' => $id,
+                'bulan' => $bulan,
+                'petugas_id' => Auth::user()->id
+            ]);
+        }
 
         return TahunAjaran::redirectWithTahunAjaranManual(route('pembayaran.show', $id), $request, 'Berhasil disimpan');
     }
@@ -90,8 +94,14 @@ class PembayaranController extends Controller
     {
         $user = User::findUser($request, 'siswa', $id);
         if ($user) {
+            $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
             $pembayarans = t_pembayaran::get_pembayaran($request, $id);
-            return view('pembayaran.show', compact('user', 'pembayarans'));
+            $sudah_bayar = User::find($id)->pembayaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->count();
+            $data_total = [
+                'sudah' => $sudah_bayar * $user->nominal,
+                'belum' => (12 - $sudah_bayar) * $user->nominal
+            ];
+            return view('pembayaran.show', compact('user', 'pembayarans', 'data_total'));
         }else{
             abort(403);
         }
@@ -116,5 +126,22 @@ class PembayaranController extends Controller
         }else{
             abort(403);
         }
+    }
+
+    public function export_all(Request $request){
+        // $sheetNames = ['Sheet 1', 'Sheet 2', 'Sheet 3']; // Nama sheet yang diinginkan
+        // $data = [
+        //     ['Data Sheet 1'], // Data untuk Sheet 1
+        //     ['Data Sheet 2'], // Data untuk Sheet 2
+        //     ['Data Sheet 3'], // Data untuk Sheet 3
+        // ];
+
+        // $export = Excel::create('example', function($excel) use ($sheetNames, $data) {
+        //     $sheetCount = count($sheetNames);
+        //     for ($i = 0; $i < $sheetCount; $i++) {
+        //         $excel->sheet(new MyExport($data[$i], $sheetNames[$i]));
+        //     }
+        // });
+        return Excel::download(new PembayaranExportAll($request), 'pembayaran.xlsx');
     }
 }

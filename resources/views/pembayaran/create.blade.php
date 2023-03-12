@@ -25,9 +25,9 @@
       </div>
       <div class="mb-3">
         <label for="bulan" class="form-label">Bulan</label>
-        <select class="form-select @error('bulan') is-invalid @enderror" name="bulan" value="{{ old('bulan') }}"
+        <select class="fstdropdown-select form-select @error('bulan') is-invalid @enderror" multiple name="bulan[]" value="{{ old('bulan') }}"
           id="bulan">
-          <option value="">Pilih bulan</option>
+          {{-- <option value="">Pilih bulan</option> --}}
           @foreach ($bulans as $key => $bulan)
           @if (old('bulan') == $key)
           <option value="{{ $key }}" selected>{{ $bulan }}</option>

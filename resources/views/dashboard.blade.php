@@ -40,6 +40,11 @@
     </div>
 </div>
 @else
+@if (Auth::user()->hasRole('siswa') && $status)
+<div class="alert alert-danger" role="alert">
+    Silahkan melakukan pembayaran karena sudah tenggat
+</div>
+@endif
 <div class="card mb-3" style="min-height: 17rem;overflow: auto;">
     <div class="card-body">
         <div class="title" style="display: flex; justify-content: space-between">
@@ -84,7 +89,6 @@
         </div>
     </div>
 </div>
-
 @endif
 @endsection
 

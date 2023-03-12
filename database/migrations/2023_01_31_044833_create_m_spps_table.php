@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('m_spps', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tahun_ajaran_id')->constrained();
-            $table->foreignId('sekolah_id')->constrained();
-            $table->bigInteger('nominal');
-            $table->timestamps();
-        });
+Schema::create('m_spps', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('tahun_ajaran_id')->constrained();
+    $table->foreignId('sekolah_id')->constrained();
+    $table->bigInteger('nominal');
+    $table->timestamps();
+});
     }
 
     /**

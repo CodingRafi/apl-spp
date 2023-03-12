@@ -9,6 +9,7 @@ use App\Models\ref_agama;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -27,6 +28,17 @@ class DashboardController extends Controller
         }else {
             $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
             $return = [];
+
+            if (Auth::user()->hasRole('siswa')) {
+                $now = Carbon::now();
+                $now_month = (int) Carbon::parse($now)->translatedFormat('m');
+                $check = DB::table('t_pembayarans')->where('t_pembayarans.siswa_id', Auth::user()->id)
+                                                    ->where('t_pembayarans.tahun_ajaran_id', $tahun_ajaran->id)
+                                                    ->where('t_pembayarans.bulan', $now_month)
+                                                    ->first();
+
+                $return['status'] = ($check) ? false : ((int) Carbon::parse($now)->translatedFormat('d') > (int) config('services.tenggat') ? true : false);
+            }
 
             return view('dashboard', $return);
         }

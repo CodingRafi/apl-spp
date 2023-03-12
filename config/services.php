@@ -47,4 +47,6 @@ return [
         '11' => 'XI',
         '12' => 'XII',
     ], 
+
+    'tenggat' => ENV('tenggat', 10)
 ];

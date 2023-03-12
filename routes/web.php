@@ -86,6 +86,7 @@ Route::group(['middleware' => ['auth']], function() {
     // Pembayaran SPP
     Route::prefix('pembayaran')->name('pembayaran.')->group(function () {
         Route::get('/', [PembayaranController::class, 'index'])->name('index');
+        Route::post('/export/excel', [PembayaranController::class, 'export_all'])->name('export_all');
         Route::get('/export/{user_id}', [PembayaranController::class, 'export'])->name('export');
         Route::get('create/{user_id}', [PembayaranController::class, 'create'])->name('create');
         Route::get('{user_id}', [PembayaranController::class, 'show'])->name('show');

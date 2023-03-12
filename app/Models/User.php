@@ -84,19 +84,21 @@ class User extends Authenticatable
         if ($tahun_ajaran) {
             $users = User::when($role == 'siswa', function($q) use($role, $request, $tahun_ajaran, $detail, $filter){
                         $q->join('profile_siswas', 'profile_siswas.user_id', 'users.id')
+                            ->join('user_kelas', 'user_kelas.user_id', 'users.id')
+                            ->leftJoin('kelas', 'user_kelas.kelas_id', 'kelas.id')
                             ->when($detail, function($query) use ($detail){
-                                $query->select('users.email', 'users.profil', 'users.nipd', 'profile_siswas.nisn', 'profile_siswas.nik','profile_siswas.jk', 'profile_siswas.jalan', 'profile_siswas.name', 'profile_siswas.tempat_lahir', 'profile_siswas.tanggal_lahir', 'ref_provinsis.nama as provinsi', 'ref_kabupatens.nama as kabupaten', 'ref_kecamatans.nama as kecamatan', 'ref_kelurahans.nama as kelurahan', 'ref_agamas.nama as agama', 'kelas.nama as kelas', 'kompetensis.kompetensi', 'users.id')
+                                $query->select('users.email', 'users.profil', 'users.nipd', 'profile_siswas.nisn', 'profile_siswas.nik','profile_siswas.jk', 'profile_siswas.jalan', 'profile_siswas.name', 'profile_siswas.tempat_lahir', 'profile_siswas.tanggal_lahir', 'ref_provinsis.nama as provinsi', 'ref_kabupatens.nama as kabupaten', 'ref_kecamatans.nama as kecamatan', 'ref_kelurahans.nama as kelurahan', 'ref_agamas.nama as agama', 'kelas.nama as kelas', 'kompetensis.kompetensi', 'users.id', 'users.id','m_spps.nominal', 'ref_tingkats.romawi')
                                 ->join('ref_agamas', 'profile_siswas.ref_agama_id', 'ref_agamas.id')
+                                ->join('ref_tingkats', 'ref_tingkats.id', 'kelas.ref_tingkat_id')
                                 ->join('ref_provinsis', 'profile_siswas.ref_provinsi_id', 'ref_provinsis.id')
                                 ->join('ref_kabupatens', 'profile_siswas.ref_kabupaten_id', 'ref_kabupatens.id')
                                 ->join('ref_kecamatans', 'profile_siswas.ref_kecamatan_id', 'ref_kecamatans.id')
-                                ->join('ref_kelurahans', 'profile_siswas.ref_kelurahan_id', 'ref_kelurahans.id');
+                                ->join('ref_kelurahans', 'profile_siswas.ref_kelurahan_id', 'ref_kelurahans.id')
+                                ->leftJoin('m_spps', 'm_spps.id', 'profile_siswas.spp_id');
                             })
                             ->when(!$detail, function($qu) use($detail){
                                 $qu->select('users.*');
                             })
-                            ->join('user_kelas', 'user_kelas.user_id', 'users.id')
-                            ->leftJoin('kelas', 'user_kelas.kelas_id', 'kelas.id')
                             ->leftJoin('kompetensis', 'profile_siswas.kompetensi_id', 'kompetensis.id')
                             ->where('user_kelas.tahun_ajaran_id', $tahun_ajaran->id)
                             ->filterSiswa($filter);
@@ -104,7 +106,7 @@ class User extends Authenticatable
                     ->when($role != 'siswa', function($q) use($role, $detail, $filter){
                         $q->join('profile_users', 'profile_users.user_id', 'users.id')
                             ->when($detail, function($query) use ($detail){
-                                $query->select('users.email', 'users.profil', 'users.nip','profile_users.jk', 'profile_users.tempat_lahir', 'profile_users.tanggal_lahir', 'profile_users.jalan', 'profile_users.name', 'ref_provinsis.nama as provinsi', 'ref_kabupatens.nama as kabupaten', 'ref_kecamatans.nama as kecamatan', 'ref_kelurahans.nama as kelurahan', 'ref_agamas.nama as agama', 'users.id')
+                                $query->select('users.email', 'users.profil', 'users.nip','profile_users.jk', 'profile_users.tempat_lahir', 'profile_users.tanggal_lahir', 'profile_users.jalan', 'profile_users.name', 'ref_provinsis.nama as provinsi', 'ref_kabupatens.nama as kabupaten', 'ref_kecamatans.nama as kecamatan', 'ref_kelurahans.nama as kelurahan', 'ref_agamas.nama as agama')
                                 ->join('ref_agamas', 'profile_users.ref_agama_id', 'ref_agamas.id')
                                 ->join('ref_provinsis', 'profile_users.ref_provinsi_id', 'ref_provinsis.id')
                                 ->join('ref_kabupatens', 'profile_users.ref_kabupaten_id', 'ref_kabupatens.id')

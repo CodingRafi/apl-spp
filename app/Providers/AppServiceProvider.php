@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema; 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
         $roles = Role::all();
         View::share('roles', $roles);
+
+        config(['app.locale' => 'id']);
+	    Carbon::setLocale('id');
 
         view()->composer('*', function($view)
         {

@@ -31,7 +31,7 @@
                 <input class="form-check-input" type="checkbox" name="status" onclick="isChecked()" {{ $tahun_ajaran->status == 'aktif' ? 'checked' : '' }}>
                 <label class="form-label message">Tidak Aktif</label>
             </div>
-            <button type="submit" class="btn text-white" style="background-color: #3bae9c">Simpan</button>
+            <button type="submit" class="btn text-white btn-primary">Simpan</button>
         </form>
     </div>
 </div>

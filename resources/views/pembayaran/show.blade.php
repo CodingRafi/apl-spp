@@ -28,6 +28,7 @@
                 <thead>
                     <tr>
                         <th>Bulan</th>
+                        <th>Nominal</th>
                         <th>Status</th>
                         <th>Diterima Oleh</th>
                         @can('delete_pembayaran')
@@ -39,6 +40,7 @@
                     @foreach ($pembayarans as $pembayaran)
                     <tr>
                         <td>{{ $pembayaran['bulan'] }}</td>
+                        <td>Rp.{{ $user->nominal }}</td>
                         <td>{!! $pembayaran['status'] !!}</td>
                         <td>{{ $pembayaran['diterima_oleh'] }}</td>
                         @can('delete_pembayaran')
@@ -52,6 +54,10 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Sudah Dibayar: <strong>{{ $data_total['sudah'] }} ({{ $data_total['sudah'] / $user->nominal }} Bulan)</strong></div>
+            <div class="col-md-6 d-flex justify-content-end">Belum sudah Dibayar: <strong>{{ $data_total['belum'] }} ({{ $data_total['belum'] / $user->nominal }} Bulan)</strong></div>
         </div>
     </div>
 </div>

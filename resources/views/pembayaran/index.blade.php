@@ -2,12 +2,16 @@
 
 @section('content')
 <div class="d-flex justify-content-between mb-3 align-items-center">
-    <div class="col-md-7">
-        <h4><strong>Pembayaran</strong></h4>
-    </div>
+    <h4><strong>Pembayaran</strong></h4> 
+    <form action="{{ route('pembayaran.export_all') }}" method="POST" class="form-export">
+        @include('mypartials.tahunajaran')
+        @csrf
+        <button type="submit" class="btn btn-primary">Export</button>
+    </form>
 </div>
 <div class="card">
     <div class="card-body">
+        @if (!Auth::user()->hasRole('siswa'))
         <div class="row container-filter">
             <div class="col-md-6 mb-3">
                 <input type="text" class="form-control" placeholder="Search..." name="search" onkeyup="filter_user()">
@@ -31,6 +35,7 @@
                 </select>
             </div>
         </div>
+        @endif
         <div class="table table-responsive table-hover text-center">
             <table class="table align-middle table-user">
                 <thead>
@@ -68,6 +73,11 @@
 
 @push('js')
 <script>
+    $('.form-export button').on('click', function(e){
+        e.preventDefault();
+        $('.form-export').append(`<input type="hidden" name="kelas_id" value="${$('.filter-kelas').val()}">`).submit();
+    })
+
     function filter_user(){
             let role = '{{ request("role") }}';
             let form = new FormData();

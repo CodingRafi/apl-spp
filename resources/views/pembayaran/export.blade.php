@@ -52,6 +52,7 @@
         <thead>
             <tr>
                 <th>Bulan</th>
+                <th>Nominal</th>
                 <th>Status</th>
                 <th>Diterima Oleh</th>
             </tr>
@@ -60,6 +61,7 @@
             @foreach ($pembayarans as $pembayaran)
             <tr>
                 <td>{{ $pembayaran['bulan'] }}</td>
+                <td>Rp.{{ $user->nominal }}</td>
                 <td>{!! $pembayaran['status'] !!}</td>
                 <td>{{ $pembayaran['diterima_oleh'] }}</td>
             </tr>
