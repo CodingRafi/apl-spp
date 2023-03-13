@@ -9,7 +9,7 @@ BEGIN
 END
 
 
-FUNCTION
+FUNCTION sisa_pembayaran
 CREATE FUNCTION sisa_pembayaran (user_id INT, tahun_ajaran_id INT)
 RETURNS INT
 BEGIN
@@ -17,6 +17,9 @@ BEGIN
     SET total = (SELECT m_spps.nominal FROM users INNER JOIN profile_siswas ON profile_siswas.user_id = users.id INNER JOIN m_spps ON m_spps.id = profile_siswas.spp_id WHERE users.id = user_id) * (12 - (SELECT COUNT(t_pembayarans.id) FROM t_pembayarans WHERE t_pembayarans.siswa_id = user_id AND t_pembayarans.tahun_ajaran_id = tahun_ajaran_id));
     RETURN total;
 END$$
+
+
+FUNCTION sudah_dibayar
 
 
 STORE PROSEDURED
