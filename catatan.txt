@@ -1,0 +1,26 @@
+TRIGGER
+
+BEGIN
+  DECLARE id INT;
+  SET id = old.id;
+  
+  UPDATE profile_users SET ref_agama_id = null WHERE ref_agama_id = id;
+  UPDATE profile_siswas SET ref_agama_id = null WHERE ref_agama_id = id;
+END
+
+
+FUNCTION
+CREATE FUNCTION sisa_pembayaran (user_id INT, tahun_ajaran_id INT)
+RETURNS INT
+BEGIN
+    DECLARE total INT;
+    SET total = (SELECT m_spps.nominal FROM users INNER JOIN profile_siswas ON profile_siswas.user_id = users.id INNER JOIN m_spps ON m_spps.id = profile_siswas.spp_id WHERE users.id = user_id) * (12 - (SELECT COUNT(t_pembayarans.id) FROM t_pembayarans WHERE t_pembayarans.siswa_id = user_id AND t_pembayarans.tahun_ajaran_id = tahun_ajaran_id));
+    RETURN total;
+END$$
+
+
+STORE PROSEDURED
+CREATE PROCEDURE get_siswa_pembayaran(user_id INT, tahun_ajaran_id INT)
+BEGIN
+    SELECT profile_siswas.name, profile_siswas.nisn, (SELECT sisa_pembayaran(user_id, tahun_ajaran_id)) as sisa_pembayaran FROM users INNER JOIN profile_siswas ON profile_siswas.user_id = users.id WHERE users.id = user_id;
+END$$

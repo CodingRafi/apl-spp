@@ -94,14 +94,8 @@ class PembayaranController extends Controller
     {
         $user = User::findUser($request, 'siswa', $id);
         if ($user) {
-            $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
             $pembayarans = t_pembayaran::get_pembayaran($request, $id);
-            $sudah_bayar = User::find($id)->pembayaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->count();
-            $data_total = [
-                'sudah' => $sudah_bayar * $user->nominal,
-                'belum' => (12 - $sudah_bayar) * $user->nominal
-            ];
-            return view('pembayaran.show', compact('user', 'pembayarans', 'data_total'));
+            return view('pembayaran.show', compact('user', 'pembayarans'));
         }else{
             abort(403);
         }

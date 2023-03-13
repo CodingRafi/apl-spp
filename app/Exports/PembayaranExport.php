@@ -3,7 +3,7 @@
 namespace App\Exports;
 
 use DB;
-use App\Models\{TahunAjaran, User};
+use App\Models\{TahunAjaran, User, t_pembayaran};
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -25,15 +25,18 @@ class PembayaranExport implements FromView, ShouldAutoSize, WithTitle
 
     private function get_pembayaran(){
         $users = User::getUser($this->request, 'siswa', true, false, ['kelas' => $this->kelas]);
-        $tahun_ajaran = TahunAjaran::getTahunAjaran($this->request);
 
         foreach ($users as $key => $user) {
-            $pembayaran = [];
-            foreach (config('services.bulan') as $key => $bulan) {
-                $check = DB::table('t_pembayarans')->where('siswa_id', $user->id)->where('tahun_ajaran_id', $tahun_ajaran->id)->where('bulan', $key + 1)->count();
-                $pembayaran[$key+1] = $check > 0 ? true : false;
-            }
-            $user['pembayarans'] = $pembayaran;
+            // $pembayaran = [];
+            // foreach (config('services.bulan') as $key => $bulan) {
+            //     $check = DB::table('t_pembayarans')
+            //                 ->where('siswa_id', $user->id)
+            //                 ->where('tahun_ajaran_id', $tahun_ajaran->id)
+            //                 ->where('bulan', $key + 1)
+            //                 ->count();
+            //     $pembayaran[$key+1] = $check > 0 ? true : false;
+            // }
+            $user['pembayarans'] = t_pembayaran::get_pembayaran($this->request, $user->id);;
         }   
 
         $this->datas = $users;

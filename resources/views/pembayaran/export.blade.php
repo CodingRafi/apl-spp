@@ -58,7 +58,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($pembayarans as $pembayaran)
+            @foreach ($pembayarans['response'] as $pembayaran)
             <tr>
                 <td>{{ $pembayaran['bulan'] }}</td>
                 <td>Rp.{{ $user->nominal }}</td>
@@ -68,6 +68,11 @@
             @endforeach
         </tbody>
     </table>
+
+    <div style="display: flex;justify-content: space-between;">
+        <div>Sudah dibayar: <strong>{{ $pembayarans['status_pembayaran'][0]->sudah_dibayar }}</strong></div>
+        <div>Sisa Pembayaran: <strong>{{ $pembayarans['status_pembayaran'][0]->sisa_pembayaran }}</strong></div>
+    </div>
 </body>
 
 </html>

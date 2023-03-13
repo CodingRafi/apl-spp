@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($pembayarans as $pembayaran)
+                    @foreach ($pembayarans['response'] as $pembayaran)
                     <tr>
                         <td>{{ $pembayaran['bulan'] }}</td>
                         <td>Rp.{{ $user->nominal }}</td>
@@ -56,8 +56,8 @@
             </table>
         </div>
         <div class="row">
-            <div class="col-md-6">Sudah Dibayar: <strong>{{ $data_total['sudah'] }} ({{ $data_total['sudah'] / $user->nominal }} Bulan)</strong></div>
-            <div class="col-md-6 d-flex justify-content-end">Belum sudah Dibayar: <strong>{{ $data_total['belum'] }} ({{ $data_total['belum'] / $user->nominal }} Bulan)</strong></div>
+            <div class="col-md-6">Sudah Dibayar: <strong>{{ $pembayarans['status_pembayaran'][0]->sudah_dibayar }}</strong></div>
+            <div class="col-md-6 d-flex justify-content-end">Belum sudah Dibayar: <strong>{{ $pembayarans['status_pembayaran'][0]->sisa_pembayaran }}</strong></div>
         </div>
     </div>
 </div>

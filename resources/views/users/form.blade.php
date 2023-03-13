@@ -136,16 +136,16 @@
         @enderror
     </div>
     <div class="mb-3">
-        <label for="agama_id" class="form-label">Agama</label>
-        <select class="form-select @error('agama_id') is-invalid @enderror" id="agama_id" name="ref_agama_id"
-            value="{{ old('agama_id') }}" style=" font-size: 15px; height: 6.5vh;">
+        <label for="ref_agama_id" class="form-label">Agama</label>
+        <select class="form-select @error('ref_agama_id') is-invalid @enderror" id="ref_agama_id" name="ref_agama_id"
+            value="{{ old('ref_agama_id') }}" style=" font-size: 15px; height: 6.5vh;">
             <option value="">Pilih Agama</option>
             @foreach ($agamas as $agama)
             <option value="{{ $agama->id }}" {{ isset($data) ? ($data->ref_agama_id == $agama->id ? 'selected' : '') :
                 (old('ref_agama_id') == $agama->id ? 'selected' : '') }}>{{ $agama->nama}}</option>
             @endforeach
         </select>
-        @error('agama_id')
+        @error('ref_agama_id')
         <div class="invalid-feedback">
             {{ $message }}
         </div>

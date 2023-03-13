@@ -19,11 +19,11 @@
             <td align="center" style="border: 1px solid black;">{{ $user->name }}</td>
             <td align="center" style="border: 1px solid black;">{{ $user->romawi }} {{ $user->kelas }}</td>
             <td align="center" style="border: 1px solid black;">{{ $user->kompetensi }}</td>
-            @foreach (config('services.bulan') as $key => $bulan)
-            <th align="center" style="border: 1px solid black;">{{ $user['pembayarans'][$key+1] ? 'v' : '' }}</th>
+            @foreach ($user['pembayarans']['response'] as $pembayaran)
+            <th align="center" style="border: 1px solid black;">{{ $pembayaran['id'] ? 'v' : '' }}</th>
             @endforeach
-            <td align="center" style="border: 1px solid black;">{{ count(array_keys($user['pembayarans'], true)) * $user->nominal }}</td>
-            <td align="center" style="border: 1px solid black;">{{ count(array_keys($user['pembayarans'], false)) * $user->nominal }}</td>
+            <td align="center" style="border: 1px solid black;">{{ $user['pembayarans']['status_pembayaran'][0]->sudah_dibayar }}</td>
+            <td align="center" style="border: 1px solid black;">{{ $user['pembayarans']['status_pembayaran'][0]->sisa_pembayaran }}</td>
         </tr>
         @endforeach
     </tbody>

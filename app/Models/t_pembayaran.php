@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use DB;
 
 class t_pembayaran extends Model
 {
@@ -32,10 +33,13 @@ class t_pembayaran extends Model
                 'id' => $pembayaran ? $pembayaran->id : '',
                 'bulan' => $bulan,
                 'status' => $pembayaran ? 'Sudah di bayar pada tanggal <strong>' . date('d F Y', strtotime($pembayaran->created_at)) . '</strong>': '',
-                'diterima_oleh' => $pembayaran ? ($pembayaran->petugas->profile_user ? $pembayaran->petugas->profile_user->name : '') : ''
+                'diterima_oleh' => $pembayaran ? ($pembayaran->petugas->profile_user ? $pembayaran->petugas->profile_user->name : '') : '',
             ];
         }
 
-        return $response;
+        return [
+            'response' => $response,
+            'status_pembayaran' => DB::select('CALL get_siswa_pembayaran('. $user_id .', '. $tahun_ajaran->id .')')
+        ];
     }
 }
