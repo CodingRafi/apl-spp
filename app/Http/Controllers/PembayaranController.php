@@ -129,19 +129,6 @@ class PembayaranController extends Controller
     }
 
     public function export_all(Request $request){
-        // $sheetNames = ['Sheet 1', 'Sheet 2', 'Sheet 3']; // Nama sheet yang diinginkan
-        // $data = [
-        //     ['Data Sheet 1'], // Data untuk Sheet 1
-        //     ['Data Sheet 2'], // Data untuk Sheet 2
-        //     ['Data Sheet 3'], // Data untuk Sheet 3
-        // ];
-
-        // $export = Excel::create('example', function($excel) use ($sheetNames, $data) {
-        //     $sheetCount = count($sheetNames);
-        //     for ($i = 0; $i < $sheetCount; $i++) {
-        //         $excel->sheet(new MyExport($data[$i], $sheetNames[$i]));
-        //     }
-        // });
         return Excel::download(new PembayaranExportAll($request), 'pembayaran.xlsx');
     }
 }
