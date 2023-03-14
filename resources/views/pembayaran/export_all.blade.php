@@ -1,3 +1,8 @@
+@php
+    $total_all_sudah_dibayar = 0;
+    $total_all_belum_dibayar = 0;
+@endphp
+
 <table>
     <thead>
         <tr>
@@ -14,6 +19,10 @@
     </thead>
     <tbody>
         @foreach ($users as $user)
+        @php
+            $total_all_sudah_dibayar += $user['pembayarans']['status_pembayaran'][0]->sudah_dibayar;
+            $total_all_belum_dibayar += $user['pembayarans']['status_pembayaran'][0]->sisa_pembayaran;
+        @endphp
         <tr>
             <td align="center" style="border: 1px solid black;">{{ $loop->iteration }}</td>
             <td align="center" style="border: 1px solid black;">{{ $user->name }}</td>
@@ -27,4 +36,10 @@
         </tr>
         @endforeach
     </tbody>
+</table>
+<table>
+    <tr>
+        <td>Total yang sudah dibayar: <strong>{{ $total_all_sudah_dibayar }}</strong></td>
+        <td>Total yang belum dibayar: <strong>{{ $total_all_belum_dibayar }}</strong></td>
+    </tr>
 </table>

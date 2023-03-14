@@ -50,17 +50,6 @@ class PembayaranExport implements FromView, ShouldAutoSize, WithTitle
         ]);
     }
 
-    public function footer(): array
-    {
-        $totalAmount = $this->data->sum('amount');
-
-        return [
-            '',
-            '',
-            $totalAmount
-        ];
-    }
-
     public function title(): string
     {
         return $this->sheetName;
