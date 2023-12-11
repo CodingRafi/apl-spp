@@ -277,6 +277,7 @@
             },
         });
     }
+    
 @if (isset($data) ? $data->ref_provinsi_id : old('ref_provinsi_id'))
         kabupaten_list($('#ref_provinsi_id'), "{{ isset($data) ? $data->ref_kabupaten_id : old('ref_kabupaten_id') }}")
             .then(function(d) {

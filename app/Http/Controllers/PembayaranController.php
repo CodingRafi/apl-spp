@@ -32,7 +32,12 @@ class PembayaranController extends Controller
     
     public function index(Request $request)
     {
-        $users = User::getUser($request, 'siswa', false, true);
+        if (Auth::user()->hasRole('siswa')) {
+            $users = User::findUser($request, 'siswa', Auth::user()->id);
+            // dd($users);
+        }else{
+            $users = User::getUser($request, 'siswa', false, true);
+        }
         $data = ['users' => $users];
         $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
         if (check_jenjang()) {

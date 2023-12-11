@@ -21,20 +21,39 @@ class t_pembayaran extends Model
         return $this->belongsTo(User::class, 'petugas_id');
     }
 
+    public static function parse_bulan($bulan){
+        foreach (config('services.bulan') as $key => $name_bulan) {
+            if ($key+1 == $bulan) {
+                return $name_bulan;
+            }
+        }
+    }
+
     public static function get_pembayaran($request, $user_id){
         $response = [];
         $tahun_ajaran = TahunAjaran::getTahunAjaran($request);
         $user = User::findOrFail($user_id);
 
-        foreach (config('services.bulan') as $key => $bulan) {
-            $pembayaran = $user->pembayaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->where('bulan', $key+1)->first();
-            
+        if ($request->bulan) {
+            $pembayaran = $user->pembayaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->where('bulan', $request->bulan)->first();
+                
             $response[] = [   
                 'id' => $pembayaran ? $pembayaran->id : '',
-                'bulan' => $bulan,
+                'bulan' => t_pembayaran::parse_bulan($request->bulan),
                 'status' => $pembayaran ? 'Sudah di bayar pada tanggal <strong>' . date('d F Y', strtotime($pembayaran->created_at)) . '</strong>': '',
                 'diterima_oleh' => $pembayaran ? ($pembayaran->petugas->profile_user ? $pembayaran->petugas->profile_user->name : '') : '',
             ];
+        }else{
+            foreach (config('services.bulan') as $key => $bulan) {
+                $pembayaran = $user->pembayaran()->where('tahun_ajaran_id', $tahun_ajaran->id)->where('bulan', $key+1)->first();
+                
+                $response[] = [   
+                    'id' => $pembayaran ? $pembayaran->id : '',
+                    'bulan' => $bulan,
+                    'status' => $pembayaran ? 'Sudah di bayar pada tanggal <strong>' . date('d F Y', strtotime($pembayaran->created_at)) . '</strong>': '',
+                    'diterima_oleh' => $pembayaran ? ($pembayaran->petugas->profile_user ? $pembayaran->petugas->profile_user->name : '') : '',
+                ];
+            }
         }
 
         return [

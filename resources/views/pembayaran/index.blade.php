@@ -13,7 +13,7 @@
     <div class="card-body">
         @if (!Auth::user()->hasRole('siswa'))
         <div class="row container-filter">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
                 <input type="text" class="form-control" placeholder="Search..." name="search" onkeyup="filter_user()">
             </div>
             @if (check_jenjang())
@@ -34,6 +34,14 @@
                     @endforeach
                 </select>
             </div>
+            <div class="col-md-3 mb-3">
+                <select class="form-select filter-bulan" onchange="filter_user()">
+                    <option value="" selected>Pilih Bulan</option>
+                    @foreach (config('services.bulan') as $id => $bulan)
+                    <option value="{{ $id + 1 }}">{{ $bulan }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         @endif
         <div class="table table-responsive table-hover text-center">
@@ -47,6 +55,22 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if ( Auth::user()->hasRole('siswa') )
+                    <tr>
+                        <th scope="row">#</th>
+                        <td>
+                            <img src="{{ $users->profil == '/img/profil.png' ? $users->profil : asset('storage/' . $users->profil) }}"
+                                alt="" style="width: 4rem;height: 4rem;object-fit: cover;">
+                        </td>
+                        <td>{{ $users->name }}</td>
+                        <td>
+                            <x-ButtonCustom class="btn btn-sm btn-primary rounded"
+                                route="{{ route('pembayaran.show', ['user_id' => $users->user_id]) }}">
+                                Detail
+                            </x-ButtonCustom>
+                        </td>
+                    </tr>
+                    @else
                     @foreach ($users as $user)
                     <tr>
                         <th scope="row">{{ $loop->iteration }}</th>
@@ -63,9 +87,12 @@
                         </td>
                     </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
+            @if (!Auth::user()->hasRole('siswa'))
             {{ $users->links() }}
+            @endif
         </div>
     </div>
 </div>
@@ -75,7 +102,7 @@
 <script>
     $('.form-export button').on('click', function(e){
         e.preventDefault();
-        $('.form-export').append(`<input type="hidden" name="kelas_id" value="${$('.filter-kelas').val()}">`).submit();
+        $('.form-export').append(`<input type="hidden" name="kelas_id" value="${$('.filter-kelas').val()}">`).append(`<input type="hidden" name="bulan" value="${$('.filter-bulan').val()}">`).submit();
     })
 
     function filter_user(){
